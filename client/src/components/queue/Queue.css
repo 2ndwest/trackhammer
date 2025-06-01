@@ -1,0 +1,7 @@
+.Queue {
+	border: 2px solid white;
+	border-radius: 5px;
+}
+.Queue-Item {
+	color: white;
+}

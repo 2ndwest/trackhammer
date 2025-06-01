@@ -1,0 +1,65 @@
+/* Define Song Input Layout */
+.Text-Input {
+	overflow: hidden; /* Don't round corners against button */
+	display: flex;
+	border: 2px solid white;
+	border-radius: 5px;
+}
+
+.Text-Input input:focus {
+	outline: none;
+}
+
+.URL-Input {
+	flex: 1;
+	width: 85%;
+	background-color: var(--bg);
+	border: none;
+	color: var(--light-gray);
+	padding: 12px 16px;
+}
+
+.Hammer-Button {
+	background-color: var(--accent-orange);
+	border: none;
+	color: white;
+	transition-duration: 0.15s;
+	font-size: 1.2rem;
+	padding: 8px 12px;
+}
+
+.Hammer-Button:hover {
+	background-color: var(--darkened-orange);
+}
+
+.Hammer-Button:active {
+	background-color: var(--bg);
+}
+
+.Input-Feedback {
+}
+
+@keyframes slideFadeIn {
+	from {
+		opacity: 0;
+		transform: translateY(-0.5rem);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+.Error {
+	color: var(--error-red);
+	padding: 8px 12px;
+	text-align: left;
+	font-size: 0.8rem;
+	opacity: 0;
+	transition: opacity 0.1s ease-in;
+	transform: translateY(-5px);
+}
+
+.Error.visible {
+	opacity: 1;
+}

@@ -1,4 +1,5 @@
-import ptz from "../resources/ptz.svg";
+import ptz from "../../resources/ptz.svg";
+import "./PTZHeader.css";
 
 // Define function for PTZ Logo
 export default function PTZHeader() {

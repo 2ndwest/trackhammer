@@ -1,0 +1,11 @@
+.App-header {
+	min-height: 40vh;
+	display: flex;
+	align-items: flex-end;
+	justify-content: center;
+}
+
+.App-logo {
+	width: clamp(10vw, 20rem, 60vw);
+	margin: 2rem;
+}
