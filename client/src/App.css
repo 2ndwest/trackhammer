@@ -1,10 +1,12 @@
 :root {
-	--bg: #202020;
+	--bg: #151515;
+	--bg-highlight: #222;
 	--light-gray: #cbc5bf;
 	--accent-orange: #ff5900;
 	--darkened-orange: #cc4700;
 	--error-red: #ff4848;
 }
+
 html,
 body,
 button,

@@ -5,7 +5,7 @@ import "./PTZHeader.css";
 export default function PTZHeader() {
 	return (
 		<header className="App-header">
-			<img src={ptz} className="App-logo" alt="PUTZ Logo" />
+			<img src={ptz} className="App-logo" alt="PUTZ Logo" draggable="false" />
 		</header>
 	);
 }
