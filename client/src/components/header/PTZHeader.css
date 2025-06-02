@@ -7,5 +7,4 @@
 
 .App-logo {
 	width: clamp(10vw, 20rem, 60vw);
-	margin: 2rem;
 }

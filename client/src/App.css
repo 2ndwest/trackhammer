@@ -16,13 +16,14 @@ textarea {
 	font-family: "Varela Round", sans-serif;
 	font-size: 1rem;
 }
+
 body {
 	background-color: var(--bg);
 }
 
 .App {
 	text-align: center;
-	max-width: 65rem;
+	max-width: 50rem;
 	width: 90vw;
 	margin: auto;
 }

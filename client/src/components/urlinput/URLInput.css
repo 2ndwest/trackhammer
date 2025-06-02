@@ -4,6 +4,7 @@
 	display: flex;
 	border: 2px solid white;
 	border-radius: 5px;
+	margin: 2.5rem 0rem;
 }
 
 .Text-Input input:focus {
@@ -16,7 +17,7 @@
 	background-color: var(--bg);
 	border: none;
 	color: var(--light-gray);
-	padding: 1rem 2rem;
+	padding: 0.75rem 1.5rem;
 }
 
 .Hammer-Button {
@@ -24,8 +25,8 @@
 	border: none;
 	color: white;
 	transition-duration: 0.15s;
-	font-size: 1.5rem;
-	padding: 0.8rem 1rem;
+	font-size: 1.2rem;
+	padding: 0.4rem 1rem;
 }
 
 .Hammer-Button:hover {

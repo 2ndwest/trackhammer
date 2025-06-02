@@ -1,11 +1,7 @@
 import "./Queue.css";
 import { useState } from "react";
 
-export default function QueueItem({ url, thisIndex, moveCallback }) {
-	// const track = "Trackname";
-	// const artist = "Artist";
-	// const duration = "5:00";
-
+export default function QueueItem({ songInfo, thisIndex, moveCallback }) {
 	// Handle appearance when dragging vs not
 	const [isDragging, setIsDragging] = useState(false);
 
@@ -58,7 +54,28 @@ export default function QueueItem({ url, thisIndex, moveCallback }) {
 			onDragLeave={handleDragLeave}
 			onDrop={handleDrop}
 		>
-			<p>{url}</p>
+			<div className="Column Album">
+				<img
+					src={songInfo.cover}
+					alt={songInfo.track}
+					className="Thumbnail"
+				/>
+			</div>
+			<div className="Column Handle">
+				<p>⣿</p>
+			</div>
+			<div className="Column Index">
+				<p>{thisIndex + 1}.</p>
+			</div>
+			<div className="Column Track">
+				<p className={isHovered ? "Text Darkened" : "Text" }>{songInfo.track}</p>
+			</div>
+			<div className="Column Artist">
+				<p className={isHovered ? "Text Darkened" : "Text" }>{songInfo.artist}</p>
+			</div>
+			<div className="Column Duration">
+				<p>{songInfo.duration}</p> 
+			</div>
 		</div>
 	);
 }
