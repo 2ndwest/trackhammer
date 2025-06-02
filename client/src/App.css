@@ -21,6 +21,13 @@ body {
 	background-color: var(--bg);
 }
 
+body.dragging,
+body.dragging * {
+	cursor: grabbing !important;
+	cursor: -moz-grabbing;
+	cursor: -webkit-grabbing;
+}
+
 .App {
 	text-align: center;
 	max-width: 50rem;

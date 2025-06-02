@@ -18,17 +18,80 @@ export default function Queue() {
 	}
 
 	const [queue, setQueue] = useState([
-		new songInfo("Link1", "Abracadabra", "Lady Gaga", "4:00", ctrl_alt_reality, 0),
-		new songInfo("Link2", "Brand New Bitch", "Cobrah", "3:00", ctrl_alt_reality, 1),
-		new songInfo("Link3", "Club Classics", "Charli XCX", "4:00", ctrl_alt_reality, 3),
-		new songInfo("Link4", "Depth Charge", "The Glitch Mob", "6:00", ctrl_alt_reality, 4),
-		new songInfo("Link5", "Extraterrestrials in Outer Space Super Long Line Lorem Impsum Dolor Sit Amet", "Katy Perry but its brat so its not Lorem", "4:00:00", ctrl_alt_reality, 5),
+		new songInfo(
+			"Link1",
+			"Abracadabra",
+			"Godspeed You! Black Emperor",
+			"4:00",
+			ctrl_alt_reality,
+			0,
+		),
+		new songInfo(
+			"Link2",
+			"Brand New Bitch",
+			"Cobrah",
+			"3:00",
+			ctrl_alt_reality,
+			1,
+		),
+		new songInfo(
+			"Link3",
+			"Club Classics",
+			"Charli XCX",
+			"4:00",
+			ctrl_alt_reality,
+			3,
+		),
+		new songInfo(
+			"Link4",
+			"Depth Charge",
+			"The Glitch Mob",
+			"6:00",
+			ctrl_alt_reality,
+			4,
+		),
+		new songInfo(
+			"Link5",
+			"Extraterrestrials in Outer Space Super Long Line Lorem Impsum Dolor Sit Amet",
+			"Katy Perry but its brat so its not Lorem",
+			"4:00",
+			ctrl_alt_reality,
+			5,
+		),
 		new songInfo("Link6", "FE!N", "Travis Scott", "2:00", ctrl_alt_reality, 6),
 		new songInfo("Link7", "Gangnam Style", "Psy", "3:00", ctrl_alt_reality, 7),
-		new songInfo("Link8", "Heads Will Roll", "A-Trak", "5:00", ctrl_alt_reality, 8),
-		new songInfo("Link9", "I FEEL LIKE DANCING", "Hardwell", "3:00", ctrl_alt_reality, 9),
-		new songInfo("Link10", "Just What I Needed", "The Cars", "4:00", ctrl_alt_reality, 10),
-		new songInfo("Link11", "Karma", "Taylor Swift", "4:00", ctrl_alt_reality, 11),
+		new songInfo(
+			"Link8",
+			"Heads Will Roll",
+			"A-Trak",
+			"5:00",
+			ctrl_alt_reality,
+			8,
+		),
+		new songInfo(
+			"Link9",
+			"I FEEL LIKE DANCING",
+			"Hardwell",
+			"3:00",
+			ctrl_alt_reality,
+			9,
+		),
+		new songInfo(
+			"Link10",
+			"Just What I Needed",
+			"The Cars",
+			"4:00",
+			ctrl_alt_reality,
+			10,
+		),
+		new songInfo(
+			"Link11",
+			"Karma",
+			"Taylor Swift",
+			"4:00",
+			ctrl_alt_reality,
+			11,
+		),
 		new songInfo("Link12", "LOSING IT", "FISHER", "2:00", ctrl_alt_reality, 12),
 	]);
 
@@ -67,16 +130,20 @@ export default function Queue() {
 	}
 
 	return (
-		<ol className="Queue" ref={listRef} onDragOver={handleDragOver}>
-			{/* Iterate through list and generate QueueItems with unique keys */}
-			{queue.map((songInfo, idx) => (
-				<QueueItem
-					key={songInfo.id}
-					songInfo={songInfo}
-					thisIndex={idx}
-					moveCallback={moveItem}
-				/>
-			))}
-		</ol>
+		<div className="Queue-Wrapper">
+			<table className="Queue" ref={listRef} onDragOver={handleDragOver}>
+				<tbody>
+					{/* Iterate through list and generate QueueItems with unique keys */}
+					{queue.map((songInfo, idx) => (
+						<QueueItem
+							key={songInfo.id}
+							songInfo={songInfo}
+							thisIndex={idx}
+							moveCallback={moveItem}
+						/>
+					))}
+				</tbody>
+			</table>
+		</div>
 	);
 }

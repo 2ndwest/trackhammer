@@ -1,144 +1,177 @@
-.Queue {
-	border: 2px solid white;
-	background-color: var(--bg-highlight);
-	border-radius: 5px;
-	padding: 0;
-	margin: 0;
-	max-height: 45vh;
-	/* Handle Scrolling */
-	overflow-x: hidden;
-	overflow-y: auto;
-	-ms-overflow-style: none; /* IE and Edge */
-	scrollbar-width: none; /* Firefox */
-	scroll-behavior: smooth;
+/* Wrapper div for scrolling */
+.Queue-Wrapper {
+  max-height: 45vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  border: 2px solid white;
+  border-radius: 5px;
+  /* (optional) hide native scrollbars if you want the same look as before */
+  -ms-overflow-style: none;   /* IE/Edge */
+  scrollbar-width: none;      /* Firefox */
+}
+.Queue-Wrapper::-webkit-scrollbar {
+  display: none;
 }
 
+.Queue {
+  display: table;
+  width: 100%;
+  table-layout: fixed;  
+  background-color: var(--bg-highlight);
+  border-radius: 5px;
+  overflow: hidden; /* Round corners */
+  border-spacing: 0;
+  border-collapse: collapse;
+}
 .Queue::-webkit-scrollbar {
-	display: none;
+  display: none;
 }
 
 .Queue-Item {
-	color: white;
-	background-color: var(--bg-highlight);
-	border-top: 1px solid gray;
-	border-bottom: 1px solid gray;
-	height: 3rem;
-	display: flex;
-	text-align: left;
-	gap: 0.75rem;
+  display: table-row;
+  height: 3rem;
+  text-align: left;
+  color: white;
+  background-color: var(--bg-highlight);
+
+  border: 2px solid gray;
 }
 
-.Dragged {
-	color: var(--accent-orange);
-	border: 1px solid gray;
-}
-
-.Hovered {
-	/* color: var(--bg-highlight); */
-	background-color: var(--bg);
-	border: 2px dashed gray;
-}
-
-.Thumbnail {
-	height: 100%;
-	justify-content: left;
-	border-right: 2px solid gray;
-}
-
-.Column: {
-	margin-right: auto;
-	/* flex: 1 1 auto; */
+.Column {
+  display: table-cell;
+  vertical-align: middle;
+  box-sizing: border-box;
 }
 
 .Album {
-	max-width: 3rem;
+  width: 3rem;
+  max-height: 3rem;
+  max-width: 3rem;
+  min-width: 3rem;
+  padding: 0;
+}
+
+.Handle {
+  width: 0.5rem;
+  max-width: 0.5rem;
+  min-width: 0.5rem;
+  cursor: grab;
+}
+
+.Handle:active {
+	cursor: grabbing;
 }
 
 .Index {
-	text-align: center;
-	min-width: 2rem;
-	max-width: 2rem;
+  text-align: center;
+  width: 1rem;
+  max-width: 2rem;
+  min-width: 2rem;
 }
 
 .Track {
-	min-width: 40%;
-	max-width: 40%;
+  width: 40%;
+  max-width: 40%;
+  min-width: 40%;
 }
 
 .Artist {
-	/* flex: 1 1 0; */
-	min-width: 25%;
-	max-width: 25%;
+  width: 30%;
+  max-width: 30%;
+  min-width: 30%;
 }
 
-/* Make Artist disappear if screen is too small */
-@media only screen and (max-width: 36rem) {
-    .Artist {
-        display: none;
-    }
+.Duration {
+  /* text-align: right; */
+  width: 3rem;
+  max-width: 3rem;
+  min-width: 3rem;
+  padding-right: 1rem;        /* optional spacing from the right border */
+}
+
+
+/* -------------------------- */
+/* 5) Thumbnail inside Album   */
+/* -------------------------- */
+.Thumbnail {
+  display: block;             /* remove inline‐image gaps */
+  height: 3.4rem;               /* fill the full 3rem cell height */
+  width: auto;                /* maintain aspect ratio */
+  object-fit: cover;          /* crop if needed */
+  margin: 0;
+  padding: 0;
+  border-right: 2px solid gray; 
+}
+
+
+/* Hide fields based on screen width */
+@media (max-width: 38rem) {
+  .Artist {
+    display: none;
+  }
   .Track {
-  	min-width: 30%;
-  	max-width: 65%;
+    width: 50%;
+    max-width: 50%;
+    min-width: 50%;
   }
 }
 
-/* Make Artist and Index disappear if screen is too small */
-@media only screen and (max-width: 22rem) {
+@media (max-width: 22rem) {
   .Index {
     display: none;
   }
   .Album {
-		display: none;
+    display: none;
   }
   .Handle {
-  	margin-left: 1rem;
-	}
-}
-
-.Duration {
-	margin-left: auto;
-	flex: 0;
-	margin-right: 1rem;
-	text-align: right;
-	flex: 0 0 auto;
-	min-width: 3rem;
+    /* if you want extra gap on the left of Handle when narrow */
+    padding-left: 1rem;
+  }
 }
 
 .Text {
-	position: relative;
-	white-space: nowrap;
-	width: 100%;
-	overflow:hidden;
+  position: relative;
+  white-space: nowrap;
+  overflow: hidden;
+  width: 100%;
+}
+.Text::after {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  right: 0;
+  top: 0;
+  width: 2rem;
+  height: 100%;
+  pointer-events: none;
+  background-image: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0),
+    var(--bg-highlight) 70%
+  );
 }
 
-/* Pseudoelement that renders over text to fade it out */
-.Text:after {
-	content: "";
-	position: absolute;
-	z-index: 1;
-	right: 0;
-	pointer-events: none;
-	background-image: linear-gradient(
-		to right,
-		rgba(255, 255, 255, 0),
-		var(--bg-highlight) 70%
-	);
-	width: 2rem;
-	height: 100%;
+.Darkened::after {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  right: 0;
+  top: 0;
+  width: 2rem;
+  height: 100%;
+  pointer-events: none;
+  background-image: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0),
+    var(--bg) 70%
+  );
 }
 
-.Darkened:after {
-	content: "";
-	position: absolute;
-	z-index: 1;
-	right: 0;
-	pointer-events: none;
-	background-image: linear-gradient(
-		to right,
-		rgba(255, 255, 255, 0),
-		var(--bg) 70%
-	);
-	width: 2rem;
-	height: 100%;
+.Queue-Item.Dragged {
+	color: var(--accent-orange);
+  outline: 1px solid gray;
 }
 
+.Hovered {
+	background-color: var(--bg);
+}
