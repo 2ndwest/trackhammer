@@ -55,11 +55,7 @@ export default function QueueItem({ songInfo, thisIndex, moveCallback }) {
 			onDrop={handleDrop}
 		>
 			<div className="Column Album">
-				<img
-					src={songInfo.cover}
-					alt={songInfo.track}
-					className="Thumbnail"
-				/>
+				<img src={songInfo.cover} alt={songInfo.track} className="Thumbnail" />
 			</div>
 			<div className="Column Handle">
 				<p>⣿</p>
@@ -68,13 +64,15 @@ export default function QueueItem({ songInfo, thisIndex, moveCallback }) {
 				<p>{thisIndex + 1}.</p>
 			</div>
 			<div className="Column Track">
-				<p className={isHovered ? "Text Darkened" : "Text" }>{songInfo.track}</p>
+				<p className={isHovered ? "Text Darkened" : "Text"}>{songInfo.track}</p>
 			</div>
 			<div className="Column Artist">
-				<p className={isHovered ? "Text Darkened" : "Text" }>{songInfo.artist}</p>
+				<p className={isHovered ? "Text Darkened" : "Text"}>
+					{songInfo.artist}
+				</p>
 			</div>
 			<div className="Column Duration">
-				<p>{songInfo.duration}</p> 
+				<p>{songInfo.duration}</p>
 			</div>
 		</div>
 	);
