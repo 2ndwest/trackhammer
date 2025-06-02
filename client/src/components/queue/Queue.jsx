@@ -54,7 +54,7 @@ export default function Queue() {
 			"Link5",
 			"Extraterrestrials in Outer Space Super Long Line Lorem Impsum Dolor Sit Amet",
 			"Katy Perry but its brat so its not Lorem",
-			"4:00:00",
+			"4:00",
 			ctrl_alt_reality,
 			5,
 		),
@@ -130,16 +130,20 @@ export default function Queue() {
 	}
 
 	return (
-		<ol className="Queue" ref={listRef} onDragOver={handleDragOver}>
-			{/* Iterate through list and generate QueueItems with unique keys */}
-			{queue.map((songInfo, idx) => (
-				<QueueItem
-					key={songInfo.id}
-					songInfo={songInfo}
-					thisIndex={idx}
-					moveCallback={moveItem}
-				/>
-			))}
-		</ol>
+		<div className="Queue-Wrapper">
+			<table className="Queue" ref={listRef} onDragOver={handleDragOver}>
+				<tbody>
+					{/* Iterate through list and generate QueueItems with unique keys */}
+					{queue.map((songInfo, idx) => (
+						<QueueItem
+							key={songInfo.id}
+							songInfo={songInfo}
+							thisIndex={idx}
+							moveCallback={moveItem}
+						/>
+					))}
+				</tbody>
+			</table>
+		</div>
 	);
 }

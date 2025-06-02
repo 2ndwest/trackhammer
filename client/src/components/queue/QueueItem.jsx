@@ -13,14 +13,20 @@ export default function QueueItem({ songInfo, thisIndex, moveCallback }) {
 		setIsDragging(true);
 		e.dataTransfer.setData("text/plain", thisIndex);
 		e.dataTransfer.effectAllowed = "move";
+		// Add dragging property to body so cursor persists
+		document.body.classList.add("dragging");
 	}
 
 	function stopDragging(e) {
 		setIsDragging(false);
+		// Remove dragging property from body
+		document.body.classList.remove("dragging");
 	}
 
 	function handleDraggedOver(e) {
 		e.preventDefault();
+		var startIndex = parseInt(e.dataTransfer.getData("text/plain"));
+		if (startIndex == thisIndex) return;
 		setIsHovered(true);
 	}
 
@@ -36,7 +42,7 @@ export default function QueueItem({ songInfo, thisIndex, moveCallback }) {
 	}
 
 	return (
-		<div
+		<tr
 			// Change the class name depending on drag state
 			className={
 				isDragging
@@ -54,26 +60,26 @@ export default function QueueItem({ songInfo, thisIndex, moveCallback }) {
 			onDragLeave={handleDragLeave}
 			onDrop={handleDrop}
 		>
-			<div className="Column Album">
+			<td className="Column Album">
 				<img src={songInfo.cover} alt={songInfo.track} className="Thumbnail" />
-			</div>
-			<div className="Column Handle">
-				<p>⣿</p>
-			</div>
-			<div className="Column Index">
+			</td>
+			<td className="Column Handle">
+				<p>⋮⋮</p>
+			</td>
+			<td className="Column Index">
 				<p>{thisIndex + 1}.</p>
-			</div>
-			<div className="Column Track">
+			</td>
+			<td className="Column Track">
 				<p className={isHovered ? "Text Darkened" : "Text"}>{songInfo.track}</p>
-			</div>
-			<div className="Column Artist">
+			</td>
+			<td className="Column Artist">
 				<p className={isHovered ? "Text Darkened" : "Text"}>
 					{songInfo.artist}
 				</p>
-			</div>
-			<div className="Column Duration">
+			</td>
+			<td className="Column Duration">
 				<p>{songInfo.duration}</p>
-			</div>
-		</div>
+			</td>
+		</tr>
 	);
 }
