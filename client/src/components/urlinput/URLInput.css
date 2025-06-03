@@ -14,7 +14,6 @@
 
 .URL-Input {
 	flex: 1;
-	width: 85%;
 	background-color: var(--bg);
 	border: none;
 	color: var(--light-gray);

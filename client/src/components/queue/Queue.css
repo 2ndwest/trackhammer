@@ -1,6 +1,6 @@
 /* Wrapper div for scrolling */
 .Queue-Wrapper {
-  max-height: 45vh;
+  max-height: 40vh;
   overflow-y: auto;
   overflow-x: hidden;
   border: 2px solid white;

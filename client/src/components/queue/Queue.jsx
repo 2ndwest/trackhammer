@@ -4,6 +4,7 @@ import { arrayMoveImmutable } from "array-move";
 import ctrl_alt_reality from "../../resources/ctrl-alt-reality.jpg";
 
 import QueueItem from "./QueueItem.jsx";
+import Player from "../player/Player.jsx";
 
 export default function Queue() {
 	class songInfo {
@@ -102,8 +103,7 @@ export default function Queue() {
 		setQueue(newQueue);
 	}
 
-	// auto-scroll state
-	const scrollSpeed = 50; // px per frame (tweak as needed)
+	const scrollSpeed = 50; // px per frame
 	const edgeThreshold = 75; // px from top/bottom to trigger
 	const listRef = useRef(null);
 
@@ -118,7 +118,6 @@ export default function Queue() {
 		const { top, bottom } = container.getBoundingClientRect();
 		const y = e.clientY;
 
-		// if pointer is within `edgeThreshold` px of the top edge:
 		if (y < top + edgeThreshold) {
 			container.scrollBy({ top: -scrollSpeed, behavior: "auto" });
 		}
@@ -130,20 +129,23 @@ export default function Queue() {
 	}
 
 	return (
-		<div className="Queue-Wrapper" ref={listRef} onDragOver={handleDragOver}>
-			<table className="Queue">
-				<tbody>
-					{/* Iterate through list and generate QueueItems with unique keys */}
-					{queue.map((songInfo, idx) => (
-						<QueueItem
-							key={songInfo.id}
-							songInfo={songInfo}
-							thisIndex={idx}
-							moveCallback={moveItem}
-						/>
-					))}
-				</tbody>
-			</table>
+		<div>
+			<Player songInfo={queue[0]} />
+			<div className="Queue-Wrapper" ref={listRef} onDragOver={handleDragOver}>
+				<table className="Queue">
+					<tbody>
+						{/* Iterate through list and generate QueueItems with unique keys */}
+						{queue.map((songInfo, idx) => (
+							<QueueItem
+								key={songInfo.id}
+								songInfo={songInfo}
+								thisIndex={idx}
+								moveCallback={moveItem}
+							/>
+						))}
+					</tbody>
+				</table>
+			</div>
 		</div>
 	);
 }

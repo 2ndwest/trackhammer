@@ -1,0 +1,62 @@
+.Player {
+  margin: 1rem 0rem;
+  border: 2px solid white;
+  border-radius: 5px;
+  display: flex;
+  height: 5rem;
+  background-color: var(--bg-highlight);
+  overflow: hidden;
+}
+
+.Album-Container {
+  display: block;
+  flex: 0 0 5rem;
+  border-right: 2px solid gray;
+}
+
+.Album-Container img {
+  height: 5rem;
+}
+
+.Player-Body {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.Track-Title {
+  flex: 1 1 auto;
+  display: flex;
+  height: 2rem;
+  border: 2px solid var(--accent-orange);
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.Track-Title p {
+  text-align: left;
+  color: white;
+  font-size: 1.5rem;
+  margin-left: 0.5rem;
+  margin-top: 1.75rem;
+}
+
+.Artist-Container {
+  flex: 1 1 100%;
+  border: 2px solid red;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.Artist-Container p {
+  flex: 1 1 100%;
+  border: 2px solid red;
+  position: relative;
+}
+
+.Button-Panel {
+  flex: 0 0 6rem;
+  border: 2px solid var(--accent-orange);
+}
