@@ -6,9 +6,13 @@
   border: 2px solid white;
   border-radius: 5px;
   /* (optional) hide native scrollbars if you want the same look as before */
-  -ms-overflow-style: none;   /* IE/Edge */
-  scrollbar-width: none;      /* Firefox */
+  -ms-overflow-style: none;
+  /* IE/Edge */
+  scrollbar-width: none;
+  /* Firefox */
+  scroll-behavior: smooth;
 }
+
 .Queue-Wrapper::-webkit-scrollbar {
   display: none;
 }
@@ -16,13 +20,15 @@
 .Queue {
   display: table;
   width: 100%;
-  table-layout: fixed;  
+  table-layout: fixed;
   background-color: var(--bg-highlight);
   border-radius: 5px;
-  overflow: hidden; /* Round corners */
+  overflow: hidden;
+  /* Round corners */
   border-spacing: 0;
   border-collapse: collapse;
 }
+
 .Queue::-webkit-scrollbar {
   display: none;
 }
@@ -59,7 +65,7 @@
 }
 
 .Handle:active {
-	cursor: grabbing;
+  cursor: grabbing;
 }
 
 .Index {
@@ -86,29 +92,33 @@
   width: 3rem;
   max-width: 3rem;
   min-width: 3rem;
-  padding-right: 1rem;        /* optional spacing from the right border */
+  padding-right: 1rem;
+  /* optional spacing from the right border */
 }
-
 
 /* -------------------------- */
 /* 5) Thumbnail inside Album   */
 /* -------------------------- */
 .Thumbnail {
-  display: block;             /* remove inline‐image gaps */
-  height: 3.4rem;               /* fill the full 3rem cell height */
-  width: auto;                /* maintain aspect ratio */
-  object-fit: cover;          /* crop if needed */
+  display: block;
+  /* remove inline‐image gaps */
+  height: 3.4rem;
+  /* fill the full 3rem cell height */
+  width: auto;
+  /* maintain aspect ratio */
+  object-fit: cover;
+  /* crop if needed */
   margin: 0;
   padding: 0;
-  border-right: 2px solid gray; 
+  border-right: 2px solid gray;
 }
-
 
 /* Hide fields based on screen width */
 @media (max-width: 38rem) {
   .Artist {
     display: none;
   }
+
   .Track {
     width: 50%;
     max-width: 50%;
@@ -120,9 +130,11 @@
   .Index {
     display: none;
   }
+
   .Album {
     display: none;
   }
+
   .Handle {
     /* if you want extra gap on the left of Handle when narrow */
     padding-left: 1rem;
@@ -135,6 +147,7 @@
   overflow: hidden;
   width: 100%;
 }
+
 .Text::after {
   content: "";
   position: absolute;
@@ -144,11 +157,9 @@
   width: 2rem;
   height: 100%;
   pointer-events: none;
-  background-image: linear-gradient(
-    to right,
-    rgba(255, 255, 255, 0),
-    var(--bg-highlight) 70%
-  );
+  background-image: linear-gradient(to right,
+      rgba(255, 255, 255, 0),
+      var(--bg-highlight) 70%);
 }
 
 .Darkened::after {
@@ -160,18 +171,16 @@
   width: 2rem;
   height: 100%;
   pointer-events: none;
-  background-image: linear-gradient(
-    to right,
-    rgba(255, 255, 255, 0),
-    var(--bg) 70%
-  );
+  background-image: linear-gradient(to right,
+      rgba(255, 255, 255, 0),
+      var(--bg) 70%);
 }
 
 .Queue-Item.Dragged {
-	color: var(--accent-orange);
+  color: var(--accent-orange);
   outline: 1px solid gray;
 }
 
 .Hovered {
-	background-color: var(--bg);
+  background-color: var(--bg);
 }

@@ -130,8 +130,8 @@ export default function Queue() {
 	}
 
 	return (
-		<div className="Queue-Wrapper">
-			<table className="Queue" ref={listRef} onDragOver={handleDragOver}>
+		<div className="Queue-Wrapper" ref={listRef} onDragOver={handleDragOver}>
+			<table className="Queue">
 				<tbody>
 					{/* Iterate through list and generate QueueItems with unique keys */}
 					{queue.map((songInfo, idx) => (
