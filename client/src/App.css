@@ -7,12 +7,8 @@
 	--error-red: #ff4848;
 }
 
-html,
-body,
-button,
-input,
-select,
-textarea {
+* {
+	box-sizing: border-box;
 	font-family: "Varela Round", sans-serif;
 	font-size: 1rem;
 	zoom: 100%;
