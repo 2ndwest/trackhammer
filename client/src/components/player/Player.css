@@ -20,43 +20,122 @@
 
 .Player-Body {
   flex: 1 1 auto;
-  display: flex;
+  min-width: 0;
   flex-direction: row;
-  flex-wrap: wrap;
+  width: 100%;
 }
 
-.Track-Title {
-  flex: 1 1 auto;
-  display: flex;
-  height: 2rem;
-  border: 2px solid var(--accent-orange);
-  align-items: center;
-  justify-content: flex-start;
+/* Div for the title */
+.Track-Container {
+  overflow: hidden;
+  white-space: nowrap;
+  min-width: 0;
+  height: 45%;
+  position: relative;
 }
 
-.Track-Title p {
-  text-align: left;
+/* Text in the div for the title */
+.Track-Container p {
+  overflow: hidden;
+  white-space: nowrap;
+  margin: 0.3rem 0 0 0.5rem;
+  text-align: center;
   color: white;
   font-size: 1.5rem;
-  margin-left: 0.5rem;
-  margin-top: 1.75rem;
 }
 
 .Artist-Container {
-  flex: 1 1 100%;
-  border: 2px solid red;
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
+  overflow: hidden;
+  white-space: nowrap;
+  min-width: 0;
+  height: 27%;
+  position: relative;
 }
 
 .Artist-Container p {
-  flex: 1 1 100%;
-  border: 2px solid red;
-  position: relative;
+  overflow: hidden;
+  white-space: nowrap;
+  margin: 0.1rem 0 0 0.5rem;
+  text-align: center;
+  color: gray;
+  font-size: 1rem;
+}
+
+.Progress-Container {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  height: 28%;
+  outline: 9px blue;
+}
+
+.Bar-Container {
+  flex: 1 1 80%;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  height: 25%;
+}
+
+.Bar-Progress {
+  width: 100%;
+  height: 3px;
+  margin-left: 0.6rem;
+  border-radius: 3px;
+  border: 0px;
+  overflow: hidden;
+  appearance: none;
+}
+
+.Bar-Progress::-moz-progress-bar {
+  background-color: var(--accent-orange);
+}
+
+.Bar-Progress::-webkit-progress-bar {
+  background-color: white;
+}
+
+.Bar-Progress::-webkit-progress-value {
+  background-color: var(--accent-orange);
+}
+
+.Time-Container {
+  flex: 0 0 auto;
+  height: 100%;
+}
+
+.Time-Container p {
+  font-size: 0.8rem;
+  margin: 0.15rem 0.5rem 0 0.5rem;
+  color: gray;
 }
 
 .Button-Panel {
   flex: 0 0 6rem;
+  min-width: 6rem;
+  flex-shrink: 0;
   border: 2px solid var(--accent-orange);
+}
+
+/* Overlay for fading out overflow text */
+.Fade-Out::after {
+  content: "";
+  z-index: 1;
+  right: 0;
+  top: 0;
+  width: 2rem;
+  height: 100%;
+  pointer-events: none;
+  background-image: linear-gradient(to right,
+      rgba(255, 255, 255, 0),
+      var(--bg-highlight) 70%);
+  position: absolute;
+}
+
+/* Hide certain elements when screen shrinks */
+@media (max-width: 30rem) {
+  .Album-Container {
+    display: none;
+  }
 }

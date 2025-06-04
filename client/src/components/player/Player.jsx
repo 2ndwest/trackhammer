@@ -1,18 +1,53 @@
 import "./Player.css";
 
-export default function Player({ songInfo }) {
+export default function Player({ songInfo, progress }) {
 	console.log(songInfo);
+
+	// Takes in time string and returns seconds
+	function getSeconds(time) {
+		// Split string into seconds, minutes, hours array
+		var a = time.toString().split(":").reverse();
+		var seconds = 0;
+
+		// Read each element in the array and multiply it by 60^(index)
+		// Returns the duration in seconds
+		for (let i = 0; i < a.length; i++) seconds += a[i] * 60 ** i;
+		return seconds;
+	}
+
+	var progressSeconds = getSeconds(progress);
+	var durationSeconds = getSeconds(songInfo.duration);
+
+	var completionPercentage = (progressSeconds / durationSeconds) * 100;
+
+	console.log(completionPercentage);
+
 	return (
 		<div className="Player">
 			<div className="Album-Container">
 				<img src={songInfo.cover} alt={songInfo.track} />
 			</div>
 			<div className="Player-Body">
-				<div className="Track-Title">
+				<div className="Track-Container Fade-Out">
 					<p>{songInfo.track}</p>
 				</div>
-				<div className="Artist-Container">
+				<div className="Artist-Container Fade-Out">
 					<p>{songInfo.artist}</p>
+				</div>
+				<div className="Progress-Container">
+					<div className="Bar-Container">
+						<progress
+							className="Bar-Progress"
+							id="track-progress"
+							value={completionPercentage}
+							max="100"
+						/>
+					</div>
+					<div className="Time-Container">
+						<p>
+							{progress}/{songInfo.duration}
+						</p>
+					</div>
 				</div>
 			</div>
 			<div className="Button-Panel"></div>

@@ -18,12 +18,14 @@ export default function Queue() {
 		}
 	}
 
+	const [progress, setProgress] = useState("1:30");
+
 	const [queue, setQueue] = useState([
 		new songInfo(
 			"Link1",
 			"Abracadabra",
 			"Godspeed You! Black Emperor",
-			"4:00",
+			"4:00:00",
 			ctrl_alt_reality,
 			0,
 		),
@@ -31,7 +33,7 @@ export default function Queue() {
 			"Link2",
 			"Brand New Bitch",
 			"Cobrah",
-			"3:00",
+			"3:00:00",
 			ctrl_alt_reality,
 			1,
 		),
@@ -47,7 +49,7 @@ export default function Queue() {
 			"Link4",
 			"Depth Charge",
 			"The Glitch Mob",
-			"6:00",
+			"6:00:00",
 			ctrl_alt_reality,
 			4,
 		),
@@ -81,7 +83,7 @@ export default function Queue() {
 			"Link10",
 			"Just What I Needed",
 			"The Cars",
-			"4:00",
+			"4:00:00",
 			ctrl_alt_reality,
 			10,
 		),
@@ -130,7 +132,7 @@ export default function Queue() {
 
 	return (
 		<div>
-			<Player songInfo={queue[0]} />
+			<Player songInfo={queue[0]} progress={progress} />
 			<div className="Queue-Wrapper" ref={listRef} onDragOver={handleDragOver}>
 				<table className="Queue">
 					<tbody>

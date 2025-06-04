@@ -26,7 +26,7 @@ export default function QueueItem({ songInfo, thisIndex, moveCallback }) {
 	function handleDraggedOver(e) {
 		e.preventDefault();
 		var startIndex = parseInt(e.dataTransfer.getData("text/plain"));
-		if (startIndex == thisIndex) return;
+		if (startIndex === thisIndex) return;
 		setIsHovered(true);
 	}
 
@@ -64,16 +64,18 @@ export default function QueueItem({ songInfo, thisIndex, moveCallback }) {
 				<img src={songInfo.cover} alt={songInfo.track} className="Thumbnail" />
 			</td>
 			<td className="Column Handle">
-				<p>⋮⋮</p>
+				<p>{"  ⋮⋮"}</p>
 			</td>
 			<td className="Column Index">
 				<p>{thisIndex + 1}.</p>
 			</td>
 			<td className="Column Track">
-				<p className={isHovered ? "Text Darkened" : "Text"}>{songInfo.track}</p>
+				<p className={isHovered ? "Info-Text Darkened" : "Info-Text"}>
+					{songInfo.track}
+				</p>
 			</td>
 			<td className="Column Artist">
-				<p className={isHovered ? "Text Darkened" : "Text"}>
+				<p className={isHovered ? "Info-Text Darkened" : "Info-Text"}>
 					{songInfo.artist}
 				</p>
 			</td>

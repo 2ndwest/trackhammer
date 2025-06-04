@@ -46,7 +46,7 @@
 .Column {
   display: table-cell;
   vertical-align: middle;
-  box-sizing: border-box;
+  /* box-sizing: border-box; */
 }
 
 .Album {
@@ -62,6 +62,7 @@
   max-width: 0.5rem;
   min-width: 0.5rem;
   cursor: grab;
+  padding-left: 1rem;
 }
 
 .Handle:active {
@@ -92,13 +93,10 @@
   width: 3rem;
   max-width: 3rem;
   min-width: 3rem;
-  padding-right: 1rem;
+  padding-right: 4rem;
   /* optional spacing from the right border */
 }
 
-/* -------------------------- */
-/* 5) Thumbnail inside Album   */
-/* -------------------------- */
 .Thumbnail {
   display: block;
   /* remove inline‐image gaps */
@@ -120,13 +118,13 @@
   }
 
   .Track {
-    width: 50%;
-    max-width: 50%;
-    min-width: 50%;
+    width: 45%;
+    max-width: 45%;
+    min-width: 45%;
   }
 }
 
-@media (max-width: 22rem) {
+@media (max-width: 23rem) {
   .Index {
     display: none;
   }
@@ -136,19 +134,33 @@
   }
 
   .Handle {
-    /* if you want extra gap on the left of Handle when narrow */
+    display: none;
+  }
+
+  .Track {
     padding-left: 1rem;
+    max-width: 75%;
+    min-width: 75%;
+    width: 75%;
+  }
+
+  .Duration {
+    /* flex-shrink: 1; */
+    /* flex-grow: 0; */
+    min-width: 0rem;
+    max-width: 1rem;
+    padding-right: 5rem;
   }
 }
 
-.Text {
+.Info-Text {
   position: relative;
   white-space: nowrap;
   overflow: hidden;
   width: 100%;
 }
 
-.Text::after {
+.Info-Text::after {
   content: "";
   position: absolute;
   z-index: 1;
