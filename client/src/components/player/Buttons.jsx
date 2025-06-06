@@ -1,6 +1,6 @@
 import "./Player.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import {
 	faPlay,
 	faPause,
@@ -33,7 +33,7 @@ export default function Buttons() {
 						icon={
 							volume >= 5
 								? faVolumeHigh
-								: volume != 0
+								: volume !== 0
 									? faVolumeLow
 									: faVolumeXmark
 						}

@@ -2,7 +2,6 @@ import "./Queue.css";
 import { useRef, useState } from "react";
 
 import QueueItem from "./QueueItem.jsx";
-import Player from "../player/Player.jsx";
 
 export default function Queue({ queue, changeQueueCallback }) {
 	const scrollSpeed = 50; // px per frame
