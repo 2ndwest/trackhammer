@@ -27,6 +27,7 @@
 	transition-duration: 0.15s;
 	font-size: 1.2rem;
 	padding: 0.4rem 1rem;
+	border-left: 2px solid white;
 }
 
 .Hammer-Button:hover {

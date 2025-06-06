@@ -39,7 +39,7 @@
   overflow: hidden;
   white-space: nowrap;
   margin: 0.3rem 0 0 0.5rem;
-  text-align: center;
+  text-align: left;
   color: white;
   font-size: 1.5rem;
 }
@@ -56,7 +56,7 @@
   overflow: hidden;
   white-space: nowrap;
   margin: 0.1rem 0 0 0.5rem;
-  text-align: center;
+  text-align: left;
   color: gray;
   font-size: 1rem;
 }
@@ -111,13 +111,6 @@
   color: gray;
 }
 
-.Button-Panel {
-  flex: 0 0 6rem;
-  min-width: 6rem;
-  flex-shrink: 0;
-  border: 2px solid var(--accent-orange);
-}
-
 /* Overlay for fading out overflow text */
 .Fade-Out::after {
   content: "";
@@ -138,4 +131,112 @@
   .Album-Container {
     display: none;
   }
+}
+
+/* Buttons and all that */
+
+.Button-Panel {
+  flex: 1 0 auto;
+  min-width: 5rem;
+  flex-shrink: 0;
+  /* border: 2px solid var(--accent-orange); */
+}
+
+.Playback-Buttons-Container {
+  height: 50%;
+  border-left: 2px solid white;
+  border-top: 2px solid white;
+  border-top-left-radius: 4px;
+  overflow: hidden;
+}
+
+.Playback-Button {
+  background-color: var(--accent-orange);
+  color: white;
+  height: 100%;
+  width: 33.333%;
+  border: 0;
+  border-left: 2px solid white;
+  width: 2.5rem;
+  transition-duration: 0.15s;
+}
+
+.Playback-Button:hover {
+  background-color: var(--darkened-orange);
+}
+
+.Playback-Button:active {
+  background-color: var(--bg-highlight);
+}
+
+.Outer-Button {
+  border-left: 0px;
+}
+
+.Volume-Container {
+  height: 50%;
+  text-align: right;
+  display: flex;
+}
+
+.Volume-Icon-Container {
+  width: 33.333%;
+  min-width: 33.333%;
+  height: 100%;
+  border: 0px;
+  color: gray;
+  background-color: var(--bg-highlight);
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding-left: 0.8rem;
+}
+
+.Volume-Button {
+  background-color: transparent;
+  color: white;
+  height: 100%;
+  width: 33.333%;
+  border: 0;
+  border-left: 2px solid white;
+  width: 2.5rem;
+  z-index: 1;
+  transition-duration: 0.15s;
+}
+
+.Volume-Button:hover {
+  color: gray;
+}
+
+.Volume-Button:active {
+  color: var(--bg);
+}
+
+.Volume-Buttons-Container {
+  z-index: 1;
+  height: 100%;
+  position: relative;
+}
+
+.Volume-Meter-Container {
+  width: 66.666%;
+  height: 100%;
+  position: relative;
+}
+
+.Volume-Meter {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  top: 0;
+  left: 0;
+  margin-left: 2px;
+
+  appearance: none;
+  background: none;
+}
+
+.Volume-Meter::-moz-meter-bar {
+  background: var(--accent-orange);
 }

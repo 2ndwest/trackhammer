@@ -18,6 +18,7 @@ export default function Queue() {
 		}
 	}
 
+	// eslint-disable-next-line
 	const [progress, setProgress] = useState("1:30");
 
 	const [queue, setQueue] = useState([

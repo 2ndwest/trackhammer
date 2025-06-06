@@ -1,6 +1,7 @@
 import "./Player.css";
+import Buttons from "./Buttons.jsx";
 
-export default function Player({ songInfo, progress }) {
+export default function Player({ songInfo, progress, volume }) {
 	console.log(songInfo);
 
 	// Takes in time string and returns seconds
@@ -50,7 +51,7 @@ export default function Player({ songInfo, progress }) {
 					</div>
 				</div>
 			</div>
-			<div className="Button-Panel"></div>
+			<Buttons volume={volume} />
 		</div>
 	);
 }

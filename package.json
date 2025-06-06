@@ -1,6 +1,6 @@
 {
 	"name": "trackhammer",
-	"version": 1.0,
+	"version": 1,
 	"scripts": {
 		"server": "npm run start --prefix server",
 		"client": "npm run start --prefix client",
@@ -9,5 +9,9 @@
 	},
 	"devDependencies": {
 		"concurrently": "^9.1.2"
+	},
+	"dependencies": {
+		"@fortawesome/free-solid-svg-icons": "^6.7.2",
+		"@fortawesome/react-fontawesome": "^0.2.2"
 	}
 }
