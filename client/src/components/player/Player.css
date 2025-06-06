@@ -1,11 +1,15 @@
 .Player {
-  margin: 1rem 0rem;
+  margin: 0.5rem 0rem 1rem 0rem;
   border: 2px solid white;
   border-radius: 5px;
   display: flex;
   height: 5rem;
   background-color: var(--bg-highlight);
   overflow: hidden;
+}
+
+.Player-Empty {
+  display: none;
 }
 
 .Album-Container {

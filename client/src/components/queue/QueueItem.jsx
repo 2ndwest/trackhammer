@@ -6,7 +6,7 @@ export default function QueueItem({
 	thisIndex,
 	activeDragIndex,
 	moveCallback,
-	activateDragCallback,
+	setActiveDragCallback,
 }) {
 	// Handle appearance when dragging vs not
 	const [isDragging, setIsDragging] = useState(false);
@@ -17,7 +17,7 @@ export default function QueueItem({
 	// Define event handlers
 	function startDragging(e) {
 		setIsDragging(true);
-		activateDragCallback(thisIndex);
+		setActiveDragCallback(thisIndex);
 		e.dataTransfer.setData("text/plain", thisIndex);
 		e.dataTransfer.effectAllowed = "move";
 		// Add dragging property to body so cursor persists
@@ -28,12 +28,13 @@ export default function QueueItem({
 		setIsDragging(false);
 		// Remove dragging property from body
 		document.body.classList.remove("dragging");
+		setActiveDragCallback(-1);
 	}
 
 	function handleDraggedOver(e) {
 		e.preventDefault();
 		// Can't get data from dragged object on webshit
-		if (activeDragIndex == thisIndex) return;
+		if (activeDragIndex === thisIndex) return;
 		setIsHovered(true);
 	}
 
@@ -43,8 +44,7 @@ export default function QueueItem({
 
 	function handleDrop(e) {
 		e.preventDefault();
-		var startIndex = parseInt(e.dataTransfer.getData("text/plain"));
-		moveCallback(startIndex, thisIndex);
+		moveCallback(activeDragIndex, thisIndex);
 		setIsHovered(false);
 	}
 

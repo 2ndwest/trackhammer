@@ -24,10 +24,23 @@ export default function App() {
 	// BACKEND TESTING VARIABLES SECTION:
 	// TO BE REMOVED LATER
 	let [queue, setQueue] = useState([
-		new songInfo("Link1", "FE!N", "Travis Scott", "2:00", ctrl_alt_reality, 1),
+		new songInfo(
+			"Link1",
+			"FE!N but its brat and also Lorem Ipsum Dolor Sit Amet Skibidi",
+			"Travis Scottitude the Fourth Heir of the Rizzler Throne",
+			"2:00:00",
+			ctrl_alt_reality,
+			1,
+		),
 		new songInfo("Link2", "Gangnam Style", "Psy", "3:00", ctrl_alt_reality, 2),
 		new songInfo("Link3", "Jungle", "Fred Again", "2:00", ctrl_alt_reality, 3),
 		new songInfo("Link4", "Orca", "Bicep", "1:00:00", ctrl_alt_reality, 4),
+		new songInfo("Link2", "Gangnam Style", "Psy", "3:00", ctrl_alt_reality, 5),
+		new songInfo("Link3", "Jungle", "Fred Again", "2:00", ctrl_alt_reality, 6),
+		new songInfo("Link4", "Orca", "Bicep", "1:00:00", ctrl_alt_reality, 7),
+		new songInfo("Link2", "Gangnam Style", "Psy", "3:00", ctrl_alt_reality, 8),
+		new songInfo("Link3", "Jungle", "Fred Again", "2:00", ctrl_alt_reality, 9),
+		new songInfo("Link4", "Orca", "Bicep", "1:00:00", ctrl_alt_reality, 10),
 	]);
 
 	// Series of callbacks for modifying the queue:
@@ -38,12 +51,20 @@ export default function App() {
 		setQueue(newQueue);
 	}
 
+	function removeItem(targetIndex) {
+		setQueue(queue.toSpliced(targetIndex, 1));
+	}
+
 	return (
 		<div className="App">
 			<PTZHeader />
 			<URLInput />
 			<Player songInfo={queue[0]} />
-			<Queue queue={queue} changeQueueCallback={moveItem} />
+			<Queue
+				queue={queue}
+				changeQueueCallback={moveItem}
+				shrinkQueueCallback={removeItem}
+			/>
 		</div>
 	);
 }

@@ -1,11 +1,15 @@
+.Hider-Active {
+  display: none;
+}
+
+
 /* Wrapper div for scrolling */
 .Queue-Wrapper {
-  max-height: 40vh;
+  max-height: 35vh;
   overflow-y: auto;
   overflow-x: hidden;
   border: 2px solid white;
   border-radius: 5px;
-  /* (optional) hide native scrollbars if you want the same look as before */
   -ms-overflow-style: none;
   /* IE/Edge */
   scrollbar-width: none;
@@ -63,6 +67,7 @@
   min-width: 0.5rem;
   cursor: grab;
   padding-left: 1rem;
+  padding-right: 1rem;
 }
 
 .Handle:active {
@@ -195,4 +200,28 @@
 
 .Hovered {
   background-color: var(--bg);
+}
+
+.Trash-Container {
+  display: flex;
+  align-items: center;     /* vertical */
+  justify-content: center; /* optional: horizontal */
+  color: var(--bg);
+  width: 3rem;
+  height: 2rem;
+  font-size: 1.2rem;
+  border-radius: 6px;
+  transition-duration: 0.15s;
+  margin-top: 0.5rem;
+}
+
+.Visible {
+  color: gray;
+  border: 2px dashed gray;
+  transition-duration: 0.15s;
+}
+
+.Active {
+  color: var(--accent-orange);
+  border: 2px dashed var(--accent-orange);
 }

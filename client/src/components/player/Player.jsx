@@ -2,7 +2,7 @@ import "./Player.css";
 import Buttons from "./Buttons.jsx";
 import { useState } from "react";
 
-export default function Player({ songInfo }) {
+export default function Player({ songInfo = 0 }) {
 	// eslint-disable-next-line
 	let [progress, setProgress] = useState("1:30");
 
@@ -19,12 +19,14 @@ export default function Player({ songInfo }) {
 	}
 
 	var progressSeconds = getSeconds(progress);
-	var durationSeconds = getSeconds(songInfo.duration);
+	try {
+		var durationSeconds = getSeconds(songInfo.duration);
+	} catch (TypeError) {}
 
 	var completionPercentage = (progressSeconds / durationSeconds) * 100;
 
 	return (
-		<div className="Player">
+		<div className={songInfo === 0 ? "Player-Empty" : "Player"}>
 			<div className="Album-Container">
 				<img src={songInfo.cover} alt={songInfo.track} />
 			</div>

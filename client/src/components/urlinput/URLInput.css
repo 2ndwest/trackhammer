@@ -58,9 +58,14 @@
 	opacity: 0;
 	transition: opacity 0.1s ease-in;
 	transform: translateY(-5px);
-	margin-bottom: 1rem;
 }
 
 .Error.visible {
 	opacity: 1;
+}
+
+@media (max-width: 30rem) {
+	.Hammer-Button {
+		display: none;
+	}
 }

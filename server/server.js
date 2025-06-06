@@ -7,10 +7,11 @@ import { Server as SocketIOServer } from "socket.io";
 var app = express();
 const server = http.createServer(app);
 const io = new SocketIOServer(server, {
-	cors: {
-		origin: "http://localhost:3000",
-		methods: ["GET", "POST"],
-	},
+	require('./middlewear/devCors.js')
+	// cors: {
+	// 	origin: "http://localhost:3000",
+	// 	methods: ["GET", "POST"],
+	// },
 });
 const PORT = process.env.PORT || 3001;
 
