@@ -1,7 +1,13 @@
 import "./Queue.css";
 import { useState } from "react";
 
-export default function QueueItem({ songInfo, thisIndex, moveCallback }) {
+export default function QueueItem({
+	songInfo,
+	thisIndex,
+	activeDragIndex,
+	moveCallback,
+	activateDragCallback,
+}) {
 	// Handle appearance when dragging vs not
 	const [isDragging, setIsDragging] = useState(false);
 
@@ -11,6 +17,7 @@ export default function QueueItem({ songInfo, thisIndex, moveCallback }) {
 	// Define event handlers
 	function startDragging(e) {
 		setIsDragging(true);
+		activateDragCallback(thisIndex);
 		e.dataTransfer.setData("text/plain", thisIndex);
 		e.dataTransfer.effectAllowed = "move";
 		// Add dragging property to body so cursor persists
@@ -25,8 +32,8 @@ export default function QueueItem({ songInfo, thisIndex, moveCallback }) {
 
 	function handleDraggedOver(e) {
 		e.preventDefault();
-		var startIndex = parseInt(e.dataTransfer.getData("text/plain"));
-		if (startIndex === thisIndex) return;
+		// Can't get data from dragged object on webshit
+		if (activeDragIndex == thisIndex) return;
 		setIsHovered(true);
 	}
 

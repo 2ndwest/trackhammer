@@ -240,3 +240,12 @@
 .Volume-Meter::-moz-meter-bar {
   background: var(--accent-orange);
 }
+
+.Volume-Meter::-webkit-meter-bar {
+  background: none;
+  height: 2.38rem !important;
+}
+
+.Volume-Meter::-webkit-meter-optimum-value {
+  background: var(--accent-orange);
+}

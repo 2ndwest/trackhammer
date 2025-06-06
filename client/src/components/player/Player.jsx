@@ -1,8 +1,10 @@
 import "./Player.css";
 import Buttons from "./Buttons.jsx";
+import { useState } from "react";
 
-export default function Player({ songInfo, progress, volume }) {
-	console.log(songInfo);
+export default function Player({ songInfo }) {
+	// eslint-disable-next-line
+	let [progress, setProgress] = useState("1:30");
 
 	// Takes in time string and returns seconds
 	function getSeconds(time) {
@@ -20,8 +22,6 @@ export default function Player({ songInfo, progress, volume }) {
 	var durationSeconds = getSeconds(songInfo.duration);
 
 	var completionPercentage = (progressSeconds / durationSeconds) * 100;
-
-	console.log(completionPercentage);
 
 	return (
 		<div className="Player">
@@ -51,7 +51,7 @@ export default function Player({ songInfo, progress, volume }) {
 					</div>
 				</div>
 			</div>
-			<Buttons volume={volume} />
+			<Buttons />
 		</div>
 	);
 }

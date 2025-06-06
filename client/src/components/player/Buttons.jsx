@@ -1,5 +1,6 @@
 import "./Player.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useRef, useState } from "react";
 import {
 	faPlay,
 	faPause,
@@ -12,10 +13,17 @@ import {
 	faMinus,
 } from "@fortawesome/free-solid-svg-icons";
 
-export default function Buttons(volume) {
+export default function Buttons() {
 	var isPlaying = false;
 
-	volume = 1;
+	let [volume, setVolume] = useState(0);
+
+	function raiseVolumeCallback() {
+		if (volume < 10) setVolume(volume + 0.5);
+	}
+	function lowerVolumeCallback() {
+		if (volume > 0) setVolume(volume - 0.5);
+	}
 
 	return (
 		<div className="Button-Panel container">
@@ -34,10 +42,18 @@ export default function Buttons(volume) {
 				<div className="Volume-Meter-Container">
 					<meter className="Volume-Meter" max="10" value={volume}></meter>
 					<div className="Volume-Buttons-Container">
-						<button className="Volume-Button" type="button">
+						<button
+							className="Volume-Button"
+							type="button"
+							onClick={lowerVolumeCallback}
+						>
 							<FontAwesomeIcon icon={faMinus} />
 						</button>
-						<button className="Volume-Button" type="button">
+						<button
+							className="Volume-Button"
+							type="button"
+							onClick={raiseVolumeCallback}
+						>
 							<FontAwesomeIcon icon={faPlus} />
 						</button>
 					</div>
