@@ -3,8 +3,9 @@ import { useState } from "react";
 
 export default function QueueItem({
 	songInfo,
+	thisKey,
 	thisIndex,
-	activeDragIndex,
+	activeDragKey,
 	moveCallback,
 	setActiveDragCallback,
 }) {
@@ -17,8 +18,8 @@ export default function QueueItem({
 	// Define event handlers
 	function startDragging(e) {
 		setIsDragging(true);
-		setActiveDragCallback(thisIndex);
-		e.dataTransfer.setData("text/plain", thisIndex);
+		setActiveDragCallback(thisKey);
+		e.dataTransfer.setData("text/plain", thisKey);
 		e.dataTransfer.effectAllowed = "move";
 		// Add dragging property to body so cursor persists
 		document.body.classList.add("dragging");
@@ -34,7 +35,7 @@ export default function QueueItem({
 	function handleDraggedOver(e) {
 		e.preventDefault();
 		// Can't get data from dragged object on webshit
-		if (activeDragIndex === thisIndex) return;
+		if (activeDragKey === thisKey) return;
 		setIsHovered(true);
 	}
 
@@ -44,7 +45,9 @@ export default function QueueItem({
 
 	function handleDrop(e) {
 		e.preventDefault();
-		moveCallback(activeDragIndex, thisIndex);
+		console.log("activeDragKey: " + activeDragKey);
+		console.log("thisKey: " + thisKey);
+		moveCallback(activeDragKey, thisKey);
 		setIsHovered(false);
 	}
 

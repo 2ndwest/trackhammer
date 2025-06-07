@@ -9,9 +9,9 @@ export default function Queue({
 	shrinkQueueCallback,
 }) {
 	const scrollSpeed = 50; // px per frame
-	const edgeThreshold = 75; // px from top/bottom to trigger
+	const edgeThreshold = 50; // px from top/bottom to trigger
 	const listRef = useRef(null);
-	const [activeDragIndex, setActiveDragIndex] = useState(-1);
+	const [activeDragKey, setActiveDragKey] = useState(-1);
 
 	// Define a drag function for smoother drag scrolling
 	// If user is dragging within a certain margin of top or bottom, scroll smoothly
@@ -42,20 +42,21 @@ export default function Queue({
 						{/* Iterate through list and generate QueueItems with unique keys */}
 						{queue.map((songInfo, idx) => (
 							<QueueItem
-								key={songInfo.id}
+								key={songInfo.key}
+								thisKey={songInfo.key} // Can't access key proper inside child
 								songInfo={songInfo}
 								thisIndex={idx}
-								activeDragIndex={activeDragIndex}
+								activeDragKey={activeDragKey}
 								moveCallback={changeQueueCallback}
-								setActiveDragCallback={setActiveDragIndex}
+								setActiveDragCallback={setActiveDragKey}
 							/>
 						))}
 					</tbody>
 				</table>
 			</div>
 			<Trash
-				activeDragIndex={activeDragIndex}
-				setActiveDragCallback={setActiveDragIndex}
+				activeDragIndex={activeDragKey}
+				setActiveDragCallback={setActiveDragKey}
 				shrinkQueueCallback={shrinkQueueCallback}
 			/>
 		</div>
