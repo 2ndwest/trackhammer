@@ -47,7 +47,7 @@ export default function QueueItem({
 		e.preventDefault();
 		console.log("activeDragKey: " + activeDragKey);
 		console.log("thisKey: " + thisKey);
-		moveCallback(activeDragKey, thisKey);
+		moveCallback(activeDragKey, thisIndex);
 		setIsHovered(false);
 	}
 
@@ -71,7 +71,12 @@ export default function QueueItem({
 			onDrop={handleDrop}
 		>
 			<td className="Column Album">
-				<img src={songInfo.cover} alt={songInfo.track} className="Thumbnail" />
+				<img
+					draggable="false"
+					src={songInfo.coverPath}
+					alt={songInfo.track}
+					className="Thumbnail"
+				/>
 			</td>
 			<td className="Column Handle">
 				<p>{"  ⋮⋮"}</p>

@@ -18,17 +18,17 @@ export default function Player({ songInfo = 0 }) {
 		return seconds;
 	}
 
-	var progressSeconds = getSeconds(progress);
+	let completionPercentage = 0;
 	try {
-		var durationSeconds = getSeconds(songInfo.duration);
-	} catch (TypeError) {}
-
-	var completionPercentage = (progressSeconds / durationSeconds) * 100;
+		let progressSeconds = getSeconds(progress);
+		let durationSeconds = getSeconds(songInfo.duration);
+		completionPercentage = (progressSeconds / durationSeconds) * 100;
+	} catch {}
 
 	return (
 		<div className={songInfo === 0 ? "Player-Empty" : "Player"}>
 			<div className="Album-Container">
-				<img src={songInfo.cover} alt={songInfo.track} />
+				<img src={songInfo.coverPath} alt={songInfo.track} />
 			</div>
 			<div className="Player-Body">
 				<div className="Track-Container Fade-Out">
