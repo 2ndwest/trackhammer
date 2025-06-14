@@ -43,7 +43,7 @@ let queue = [
 	createNewSongInfo("Link4", "Orca", "Bicep", "1:00:00", ctrl_alt_reality, 4),
 ];
 
-export default function setupQueueSocket(socket, io) {
+export default function setupQueueLogic(socket, io) {
 	// Send the current queue to the newly connected client
 	socket.emit("updateQueue", queue);
 
@@ -72,9 +72,16 @@ export default function setupQueueSocket(socket, io) {
 
 	// Delete song by ID
 	socket.on("deleteSong", (id) => {
-		queue = queue.filter((song) => song.id !== id);
+		let keyList = [];
+		queue.forEach((queueItem) => {
+			keyList.push(queueItem.key);
+		});
+
+		let targetIndex = keyList.indexOf(id);
+
+		queue = queue.toSpliced(targetIndex, 1);
+
 		io.emit("updateQueue", queue);
-		console.log("Delete Operation");
 	});
 
 	socket.on("reorderQueue", (fromKey, toIndex) => {
@@ -88,6 +95,5 @@ export default function setupQueueSocket(socket, io) {
 		queue = arrayMoveImmutable(queue, fromIndex, toIndex);
 
 		io.emit("updateQueue", queue);
-		console.log("Reoder Operation");
 	});
 }

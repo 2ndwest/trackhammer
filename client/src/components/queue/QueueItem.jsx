@@ -1,12 +1,12 @@
 import "./Queue.css";
 import { useState } from "react";
+import socket from "../../socket.js";
 
 export default function QueueItem({
 	songInfo,
 	thisKey,
 	thisIndex,
 	activeDragKey,
-	moveCallback,
 	setActiveDragCallback,
 }) {
 	// Handle appearance when dragging vs not
@@ -45,9 +45,7 @@ export default function QueueItem({
 
 	function handleDrop(e) {
 		e.preventDefault();
-		console.log("activeDragKey: " + activeDragKey);
-		console.log("thisKey: " + thisKey);
-		moveCallback(activeDragKey, thisIndex);
+		socket.emit("reorderQueue", activeDragKey, thisIndex);
 		setIsHovered(false);
 	}
 

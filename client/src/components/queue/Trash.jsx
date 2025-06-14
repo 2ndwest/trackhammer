@@ -2,12 +2,9 @@ import "./Queue.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
+import socket from "../../socket.js";
 
-export default function Trash({
-	activeDragIndex,
-	setActiveDragCallback,
-	shrinkQueueCallback,
-}) {
+export default function Trash({ activeDragIndex, setActiveDragCallback }) {
 	let [hovered, setHovered] = useState(false);
 
 	function stopActiveState(e) {
@@ -20,7 +17,7 @@ export default function Trash({
 	}
 
 	function deleteItem(e) {
-		shrinkQueueCallback(activeDragIndex);
+		socket.emit("deleteSong", activeDragIndex);
 		setActiveDragCallback(-1);
 		setHovered(false);
 	}
