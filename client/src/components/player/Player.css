@@ -183,17 +183,22 @@
   display: flex;
 }
 
-.Volume-Icon-Container {
+.Volume-Icon-Button{
   width: 33.333%;
   min-width: 33.333%;
   height: 100%;
   border: 0px;
-  color: gray;
+  color: silver;
   background-color: var(--bg-highlight);
   display: flex;
   justify-content: flex-start;
   align-items: center;
   padding-left: 0.8rem;
+  transition-duration: 0.15s;
+}
+
+.Volume-Icon-Button:hover {
+  color: dimgray;
 }
 
 .Volume-Button {
@@ -209,7 +214,7 @@
 }
 
 .Volume-Button:hover {
-  color: gray;
+  color: silver;
 }
 
 .Volume-Button:active {
@@ -252,4 +257,12 @@
 
 .Volume-Meter::-webkit-meter-optimum-value {
   background: var(--accent-orange);
+}
+
+.Muted::-moz-meter-bar {
+  background: dimgray;
+}
+
+.Muted::-webkit-meter-optimum-value {
+  background: dimgray;
 }

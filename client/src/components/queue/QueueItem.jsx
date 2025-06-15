@@ -1,6 +1,6 @@
 import "./Queue.css";
+import { getTimeString } from "../../utils/TimeHelpers.js";
 import { useState } from "react";
-import socket from "../../socket.js";
 
 export default function QueueItem({
 	songInfo,
@@ -8,6 +8,7 @@ export default function QueueItem({
 	thisIndex,
 	activeDragKey,
 	setActiveDragCallback,
+	reorderQueueCallback,
 }) {
 	// Handle appearance when dragging vs not
 	const [isDragging, setIsDragging] = useState(false);
@@ -45,7 +46,7 @@ export default function QueueItem({
 
 	function handleDrop(e) {
 		e.preventDefault();
-		socket.emit("reorderQueue", activeDragKey, thisIndex);
+		reorderQueueCallback(activeDragKey, thisIndex);
 		setIsHovered(false);
 	}
 
@@ -93,7 +94,7 @@ export default function QueueItem({
 				</p>
 			</td>
 			<td className="Column Duration">
-				<p>{songInfo.duration}</p>
+				<p>{getTimeString(songInfo.duration)}</p>
 			</td>
 		</tr>
 	);

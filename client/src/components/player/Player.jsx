@@ -1,29 +1,30 @@
 import "./Player.css";
 import Buttons from "./Buttons.jsx";
-import { useState } from "react";
+import { getTimeString } from "../../utils/TimeHelpers.js";
+import { useState, useEffect } from "react";
+import socket from "../../socket.js";
 
-export default function Player({ songInfo = 0 }) {
-	// eslint-disable-next-line
-	let [progress, setProgress] = useState("1:30");
+export default function Player() {
+	let [songInfo, setSongInfo] = useState(0);
+	let [progress, setProgress] = useState(0);
 
-	// Takes in time string and returns seconds
-	function getSeconds(time) {
-		// Split string into seconds, minutes, hours array
-		var a = time.toString().split(":").reverse();
-		var seconds = 0;
+	// Get current song progress from server
+	useEffect(() => {
+		socket.on("updateProgress", setProgress);
+		socket.connect();
+		return () => socket.off("updateProgress");
+	}, []);
 
-		// Read each element in the array and multiply it by 60^(index)
-		// Returns the duration in seconds
-		for (let i = 0; i < a.length; i++) seconds += a[i] * 60 ** i;
-		return seconds;
-	}
+	// Get currently playing song from server
+	useEffect(() => {
+		socket.on("updateSong", setSongInfo);
+		socket.connect();
+		return () => socket.off("updateSong");
+	}, []);
 
-	let completionPercentage = 0;
-	try {
-		let progressSeconds = getSeconds(progress);
-		let durationSeconds = getSeconds(songInfo.duration);
-		completionPercentage = (progressSeconds / durationSeconds) * 100;
-	} catch {}
+	const completionPercentage = songInfo.duration
+		? (progress / songInfo.duration) * 100
+		: 0;
 
 	return (
 		<div className={songInfo === 0 ? "Player-Empty" : "Player"}>
@@ -48,7 +49,7 @@ export default function Player({ songInfo = 0 }) {
 					</div>
 					<div className="Time-Container">
 						<p>
-							{progress}/{songInfo.duration}
+							{getTimeString(progress)}/{getTimeString(songInfo.duration)}
 						</p>
 					</div>
 				</div>

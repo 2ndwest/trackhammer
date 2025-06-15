@@ -1,26 +1,17 @@
 import "./Queue.css";
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState } from "react";
 import QueueItem from "./QueueItem.jsx";
 import Trash from "./Trash.jsx";
-import socket from "../../socket.js";
 
-export default function Queue() {
+export default function Queue({
+	queue,
+	reorderQueueCallback,
+	deleteSongCallback,
+}) {
 	const scrollSpeed = 50; // px per frame
 	const edgeThreshold = 50; // px from top/bottom to trigger
 	const listRef = useRef(null);
 	const [activeDragKey, setActiveDragKey] = useState(-1);
-
-	let [queue, setQueue] = useState([]);
-
-	// On connection, get queue from server
-	useEffect(() => {
-		// Receive updates from the server
-		socket.on("updateQueue", setQueue);
-		socket.connect();
-
-		// Optional: cleanup listener on unmount
-		return () => socket.off("updateQueue");
-	}, []);
 
 	// Define a drag function for smoother drag scrolling
 	// If user is dragging within a certain margin of top or bottom, scroll smoothly
@@ -57,14 +48,16 @@ export default function Queue() {
 								thisIndex={idx}
 								activeDragKey={activeDragKey}
 								setActiveDragCallback={setActiveDragKey}
+								reorderQueueCallback={reorderQueueCallback}
 							/>
 						))}
 					</tbody>
 				</table>
 			</div>
 			<Trash
-				activeDragIndex={activeDragKey}
+				activeDragKey={activeDragKey}
 				setActiveDragCallback={setActiveDragKey}
+				deleteSongCallback={deleteSongCallback}
 			/>
 		</div>
 	);

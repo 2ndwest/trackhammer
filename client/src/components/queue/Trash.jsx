@@ -2,9 +2,12 @@ import "./Queue.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
-import socket from "../../socket.js";
 
-export default function Trash({ activeDragIndex, setActiveDragCallback }) {
+export default function Trash({
+	activeDragKey,
+	setActiveDragCallback,
+	deleteSongCallback,
+}) {
 	let [hovered, setHovered] = useState(false);
 
 	function stopActiveState(e) {
@@ -17,7 +20,7 @@ export default function Trash({ activeDragIndex, setActiveDragCallback }) {
 	}
 
 	function deleteItem(e) {
-		socket.emit("deleteSong", activeDragIndex);
+		deleteSongCallback(activeDragKey);
 		setActiveDragCallback(-1);
 		setHovered(false);
 	}
@@ -25,7 +28,7 @@ export default function Trash({ activeDragIndex, setActiveDragCallback }) {
 	return (
 		<div
 			className={
-				activeDragIndex === -1
+				activeDragKey === -1
 					? "Trash-Container"
 					: hovered
 						? "Trash-Container Active"
