@@ -15,32 +15,12 @@ let keyTracker = 5;
 
 // Temporary test queue
 let ctrl_alt_reality = "ctrl-alt-reality.jpg";
+let link = "https://google.com";
 let queue = [
-	createNewSongInfo(
-		"Link1",
-		"FE!N",
-		"Travis Scott",
-		"2:00",
-		ctrl_alt_reality,
-		1,
-	),
-	createNewSongInfo(
-		"Link2",
-		"Gangnam Style",
-		"Psy",
-		"3:00",
-		ctrl_alt_reality,
-		2,
-	),
-	createNewSongInfo(
-		"Link3",
-		"Jungle",
-		"Fred Again",
-		"2:00",
-		ctrl_alt_reality,
-		3,
-	),
-	createNewSongInfo("Link4", "Orca", "Bicep", "1:00:00", ctrl_alt_reality, 4),
+	createNewSongInfo(link, "FE!N", "Travis Scott", 120, ctrl_alt_reality, 1),
+	createNewSongInfo(link, "Gangnam Style", "Psy", 210, ctrl_alt_reality, 2),
+	createNewSongInfo(link, "Jungle", "Fred Again", 400, ctrl_alt_reality, 3),
+	createNewSongInfo(link, "Orca", "Bicep", 3657, ctrl_alt_reality, 4),
 ];
 
 export default function setupQueueLogic(socket, io) {
@@ -52,11 +32,11 @@ export default function setupQueueLogic(socket, io) {
 		try {
 			queue.push(
 				createNewSongInfo(
-					"Link5",
-					"K",
+					url,
+					"Test Song",
 					"SNTS",
-					"5:55",
-					"/resources/ctrl-alt-reality.jpg",
+					300,
+					"ctrl-alt-reality.jpg",
 					keyTracker,
 				),
 			);

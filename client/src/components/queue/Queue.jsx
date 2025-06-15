@@ -1,7 +1,7 @@
 import "./Queue.css";
 import { useRef, useState } from "react";
 import QueueItem from "./QueueItem.jsx";
-import Trash from "./Trash.jsx";
+import Trash from "./PostQueue.jsx";
 
 export default function Queue({
 	queue,

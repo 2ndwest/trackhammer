@@ -12,7 +12,7 @@ export default function URLInput() {
 	// Define function for action upon press
 	async function submitSong() {
 		if (!url.trim()) return;
-		socket.timeout(500).emit("addSong", url, (response) => {
+		socket.emit("addSong", url, (response) => {
 			if (response.success) {
 				setShowError(false);
 			} else if (response.error === undefined) {

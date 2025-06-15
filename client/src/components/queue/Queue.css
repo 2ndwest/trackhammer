@@ -193,13 +193,31 @@
       var(--bg) 70%);
 }
 
+.Title-Link {
+  color: white;
+  text-decoration: none;
+}
+
+.Title-Link:hover {
+  text-decoration: underline;
+}
+
 .Queue-Item.Dragged {
   color: var(--accent-orange);
   outline: 1px solid gray;
 }
 
+.Queue-Item.Dragged a {
+  color: var(--accent-orange);
+}
+
 .Hovered {
   background-color: var(--bg);
+}
+
+.Postqueue-Container {
+  width: 100%;
+  display:flex;
 }
 
 .Trash-Container {
@@ -213,6 +231,16 @@
   border-radius: 6px;
   transition-duration: 0.15s;
   margin-top: 0.5rem;
+}
+
+.SC-Logo-Link {
+  width: 7rem;
+  height: 1.4rem;
+  margin: 0.5rem 0.5rem 0 auto;
+}
+.SC-Logo {
+  width: 100%;
+  height: 100%;
 }
 
 .Visible {

@@ -15,7 +15,7 @@ import {
 	faMinus,
 } from "@fortawesome/free-solid-svg-icons";
 
-export default function Buttons() {
+export default function Buttons({ resetSongCallback, skipSongCallback }) {
 	let [isPlaying, setIsPlaying] = useState(false);
 	let [volume, setVolume] = useState(0);
 	let [isMuted, setIsMuted] = useState(false);
@@ -104,7 +104,11 @@ export default function Buttons() {
 				</div>
 			</div>
 			<div className="Playback-Buttons-Container">
-				<button className="Playback-Button Outer-Button" type="button">
+				<button
+					className="Playback-Button Outer-Button"
+					type="button"
+					onClick={resetSongCallback}
+				>
 					<FontAwesomeIcon icon={faBackward} />
 				</button>
 				<button
@@ -114,7 +118,11 @@ export default function Buttons() {
 				>
 					<FontAwesomeIcon icon={isPlaying ? faPause : faPlay} />
 				</button>
-				<button className="Playback-Button" type="button">
+				<button
+					className="Playback-Button"
+					type="button"
+					onClick={skipSongCallback}
+				>
 					<FontAwesomeIcon icon={faForward} />
 				</button>
 			</div>

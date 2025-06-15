@@ -7,7 +7,7 @@ export function getTimeString(time) {
 		hours = Math.floor(time / 3600) + ":";
 	}
 	minutes = Math.floor((time % 3600) / 60) + ":";
-	if (minutes.length === 2 && (hours !== 0 || minutes !== 0)) {
+	if (minutes.length === 2 && hours !== "") {
 		minutes = "0" + minutes; // Append 0 if single digits
 	}
 	seconds = time % 60;

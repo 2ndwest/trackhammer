@@ -84,9 +84,17 @@ export default function QueueItem({
 				<p>{thisIndex + 1}.</p>
 			</td>
 			<td className="Column Track">
-				<p className={isHovered ? "Info-Text Darkened" : "Info-Text"}>
-					{songInfo.track}
-				</p>
+				<div className={isHovered ? "Info-Text Darkened" : "Info-Text"}>
+					<a
+						className="Title-Link"
+						href={songInfo.link}
+						target="_blank"
+						rel="noreferrer"
+						draggable="false"
+					>
+						{songInfo.track}
+					</a>
+				</div>
 			</td>
 			<td className="Column Artist">
 				<p className={isHovered ? "Info-Text Darkened" : "Info-Text"}>

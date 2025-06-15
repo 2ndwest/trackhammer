@@ -22,6 +22,16 @@ export default function Player() {
 		return () => socket.off("updateSong");
 	}, []);
 
+	function resetSongCallback() {
+		setProgress(0);
+		socket.emit("resetSongProgress");
+	}
+
+	function skipSongCallback() {
+		setProgress(songInfo.duration);
+		socket.emit("skipSong");
+	}
+
 	const completionPercentage = songInfo.duration
 		? (progress / songInfo.duration) * 100
 		: 0;
@@ -33,7 +43,9 @@ export default function Player() {
 			</div>
 			<div className="Player-Body">
 				<div className="Track-Container Fade-Out">
-					<p>{songInfo.track}</p>
+					<a href={songInfo.link} target="_blank" rel="noreferrer">
+						{songInfo.track}
+					</a>
 				</div>
 				<div className="Artist-Container Fade-Out">
 					<p>{songInfo.artist}</p>
@@ -54,7 +66,10 @@ export default function Player() {
 					</div>
 				</div>
 			</div>
-			<Buttons />
+			<Buttons
+				resetSongCallback={resetSongCallback}
+				skipSongCallback={skipSongCallback}
+			/>
 		</div>
 	);
 }
