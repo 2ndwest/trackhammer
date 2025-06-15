@@ -39,17 +39,28 @@ export default function Buttons() {
 		return () => socket.off("updateMutedState");
 	}, []);
 
+	// For these callbacks: emit change to server then change local
+	// This makes changes snappy regardless of server lag
+	// Local then updates when it hears back from server to keep in sync
 	function raiseVolumeCallback() {
 		socket.emit("raiseVolume");
+		if (volume < 10) {
+			setVolume(volume + 0.5);
+		}
 	}
 	function lowerVolumeCallback() {
 		socket.emit("lowerVolume");
+		if (volume > 0) {
+			setVolume(volume - 0.5);
+		}
 	}
 	function changeMutedState() {
 		socket.emit("changeMutedState");
+		setIsMuted(!isMuted);
 	}
 	function changePlaybackStateCallback() {
 		socket.emit("changePlaybackState");
+		setIsPlaying(!isPlaying);
 	}
 
 	return (
