@@ -17,10 +17,70 @@ let keyTracker = 5;
 let ctrl_alt_reality = "ctrl-alt-reality.jpg";
 let link = "https://google.com";
 let queue = [
-	createNewSongInfo(link, "FE!N", "Travis Scott", 120, ctrl_alt_reality, 1),
-	createNewSongInfo(link, "Gangnam Style", "Psy", 210, ctrl_alt_reality, 2),
-	createNewSongInfo(link, "Jungle", "Fred Again", 400, ctrl_alt_reality, 3),
-	createNewSongInfo(link, "Orca", "Bicep", 3657, ctrl_alt_reality, 4),
+	createNewSongInfo(
+		"https://soundcloud.com/djshadow/building-steam-with-a-grain-2",
+		"Building Steam with a Grain of Salt",
+		"DJ Shadow",
+		399,
+		"endtroducing.jpg",
+		1,
+	),
+	createNewSongInfo(
+		"https://soundcloud.com/theglitchmob/the-glitch-mob-depth-charge",
+		"Depth Charge",
+		"The Glitch Mob",
+		394,
+		"ctrl-alt-reality.jpg",
+		2,
+	),
+	createNewSongInfo(
+		"https://soundcloud.com/jonhopkins/the-wider-sun-vessel",
+		"Vessel",
+		"Jon Hopkins",
+		282,
+		"insides.jpg",
+		3,
+	),
+	createNewSongInfo(
+		"https://soundcloud.com/massiveattack/inertia-creeps-remastered-2018",
+		"Inertia Creeps",
+		"Massive Attack",
+		357,
+		"mezzanine.jpg",
+		4,
+	),
+	createNewSongInfo(
+		"https://soundcloud.com/moderat-official/undo-redo-1",
+		"UNDO REDO",
+		"Moderat",
+		278,
+		"more-data.jpg",
+		5,
+	),
+	createNewSongInfo(
+		"https://soundcloud.com/yunna-music/ride-out",
+		"Ride Out",
+		"Yunna",
+		288,
+		"the-arrival.jpg",
+		6,
+	),
+	createNewSongInfo(
+		"https://soundcloud.com/burial-uk-1/archangel",
+		"Archangel",
+		"Burial",
+		238,
+		"untrue.jpg",
+		7,
+	),
+	createNewSongInfo(
+		"https://soundcloud.com/kettamabro/kettama-interplanetary-criminal-yosemite-1",
+		"Yosemite",
+		"Kettama",
+		362,
+		"yosemite.jpg",
+		8,
+	),
 ];
 
 export default function setupQueueLogic(socket, io) {

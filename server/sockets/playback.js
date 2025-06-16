@@ -13,15 +13,15 @@ let activeSong = createNewSongInfo(
 	"https://google.com",
 	"Orca",
 	"Bicep",
-	15000,
-	"ctrl-alt-reality.jpg",
+	274,
+	"bicep.jpg",
 	4,
 );
 
 let volume = 5;
 let isMuted = false;
 let isPlaying = false;
-let progressSeconds = 10030; // Integer in seconds
+let progressSeconds = 120; // Integer in seconds
 
 // socket is the individual connection, io is all connected clients
 export default function setupPlaybackLogic(socket, io) {
