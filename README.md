@@ -1,5 +1,5 @@
-<p style="text-align:center;"><img src="./resources/ptz.png" alt="drawing" style="width:200px;"/></p>
-<p style="text-align:center;"><img src="./resources/trackhammer-UI.png" alt="drawing" style="width:600px;"/></p>
+<h3 align="center"><img src="./resources/ptz.png" alt="drawing" style="width:200px;"/></h3>
+<h3 align="center"><img src="./resources/trackhammer-UI.png" alt="drawing" style="width:600px;"/></h3>
 <h1 align="center">
 Trackhammer
 </h1>
