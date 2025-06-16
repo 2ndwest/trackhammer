@@ -1,70 +1,52 @@
-# Getting Started with Create React App
+<p style="text-align:center;"><img src="./resources/ptz.png" alt="drawing" style="width:200px;"/></p>
+<p style="text-align:center;"><img src="./resources/trackhammer-UI.png" alt="drawing" style="width:600px;"/></p>
+<h1 align="center">
+Trackhammer
+</h1>
+<p align="center">
+Trackhammer is a system for blasting tunes on East Campus 2W, written with React and Node.js. Anyone can visit the website and submit a SoundCloud link (including SoundCloud Go+ tracks). Trackhammer will add the song to the queue. Users can play, pause, skip, adjust the volume, and reorder the queue all from the website.
+</p>
+<div align="center">Heavily inspired by <a href="https://github.com/zbanks/musicazoo">Musicazoo</a>.</div>
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+---
+## Code Overview:
+The goal of this section is to outline the bones of this project so that people who do a lil coding but don't know diddly squat about this kind of project can take a crack at maintaining it in the future.
 
-## Available Scripts
+The frontend is written with React. There are four main components:
+- App-Header (PTZ Logo)
+- Song-Entry (Text box + button)
+- Player (Currently playing song info + buttons)
+- Queue (List of upcoming songs)
 
-In the project directory, you can run:
+To maintain a snappy interface and minimize the feeling of latency, each component keeps track of its own state clientside.
+[Socket.io](https://socket.io/) is used to synchronize all clients with the most recent queue from the server.
+Any change that the user makes is immediately reflected locally.
+The client then broadcasts the change to the server, which updates its own state to reflect the change.
+The server then broadcasts its state to all clients, which update their state to reflect the server's.
 
-### `npm start`
+The one exception to this is when songs are added to the queue - the client queue will not update to reflect the new song until it has received the track information from the server - I didn't want to implement the SoundCloud API in the client lmao.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+The backend is just Node.js and Socket.io (with a teeny bit of express). Fundamentally the server receives a request from the client and then does something. The action happens in the `sockets/` folder. There are only a few ways that the client interacts with the server:
+- `queue.js`
+	- Add a song to the queue
+	- Remove a song from the queue
+	- Reorder the queue
+- `player.js`
+	- Increase the volume
+	- Decrease the volume
+	- Mute/unmute
+	- Skip current song
+	- Restart current song
+	- Pause/play
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Whenever a client requests some sort of change on the server, the server broadcasts relevant states to all clients which sync to the server's state.
+Only the currently playing song and the progress through that song are broadcast independent of any client request.
+The backend implementation of the SoundCloud API is \[NOT WRITTEN AS OF 6/16\].
 
-### `npm test`
+---
+Written by James Randall (MIT '28 EECS & STS).
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+This is my first web dev project, so I'm sure there's a lot I did wrong.
+I don't really gaf though, Putz is a doacracy so if you have a problem PULL REQUEST THAT SHIT!
+My CSS in particular is really messy and like doesn't follow convention at all because I was learning web dev and react at the same time I was writing it.
+Maybe one day it will be fixed ¯\\_(ツ)_/¯
