@@ -38,7 +38,6 @@
   position: relative;
 }
 
-/* Text in the div for the title */
 .Track-Container a {
   overflow: hidden;
   display: block;
@@ -149,7 +148,6 @@
   flex: 1 0 auto;
   min-width: 5rem;
   flex-shrink: 0;
-  /* border: 2px solid var(--accent-orange); */
 }
 
 .Playback-Buttons-Container {

@@ -28,7 +28,6 @@
   background-color: var(--bg-highlight);
   border-radius: 5px;
   overflow: hidden;
-  /* Round corners */
   border-spacing: 0;
   border-collapse: collapse;
 }
@@ -50,7 +49,6 @@
 .Column {
   display: table-cell;
   vertical-align: middle;
-  /* box-sizing: border-box; */
 }
 
 .Album {
@@ -94,23 +92,17 @@
 }
 
 .Duration {
-  /* text-align: right; */
   width: 3rem;
   max-width: 3rem;
   min-width: 3rem;
   padding-right: 4rem;
-  /* optional spacing from the right border */
 }
 
 .Thumbnail {
   display: block;
-  /* remove inline‐image gaps */
   height: 3.4rem;
-  /* fill the full 3rem cell height */
   width: auto;
-  /* maintain aspect ratio */
   object-fit: cover;
-  /* crop if needed */
   margin: 0;
   padding: 0;
   border-right: 2px solid gray;
@@ -150,8 +142,6 @@
   }
 
   .Duration {
-    /* flex-shrink: 1; */
-    /* flex-grow: 0; */
     min-width: 0rem;
     max-width: 1rem;
     padding-right: 5rem;
@@ -222,8 +212,8 @@
 
 .Trash-Container {
   display: flex;
-  align-items: center;     /* vertical */
-  justify-content: center; /* optional: horizontal */
+  align-items: center;
+  justify-content: center;
   color: var(--bg);
   width: 3rem;
   height: 2rem;

@@ -11,7 +11,7 @@ function createNewSongInfo(link, track, artist, duration, coverPath, key) {
 		key: key,
 	};
 }
-let keyTracker = 5;
+let keyTracker = 9;
 
 // Temporary test queue
 let ctrl_alt_reality = "ctrl-alt-reality.jpg";
