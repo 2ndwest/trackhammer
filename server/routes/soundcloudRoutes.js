@@ -12,7 +12,8 @@ export default function setupSoundCloudRoute(app) {
 			return res.redirect("/");
 		} catch (err) {
 			console.error("OAuth exchange failed:", err);
-			return res.status(500).send("Authentication error");
+			console.log(err);
+			return res.status(500).send("Authentication Error");
 		}
 	});
 }

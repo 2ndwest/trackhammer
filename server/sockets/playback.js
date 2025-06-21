@@ -1,22 +1,12 @@
 // Temporary song in player
-function createNewSongInfo(link, track, artist, duration, coverPath, key) {
-	return {
-		link: link,
-		track: track,
-		artist: artist,
-		duration: duration,
-		coverPath: coverPath,
-		key: key,
-	};
-}
-let activeSong = createNewSongInfo(
-	"https://google.com",
-	"Orca",
-	"Bicep",
-	274,
-	"bicep.jpg",
-	4,
-);
+let activeSong = {
+	link: "https://google.com",
+	track: "Orca",
+	artist: "Bicep",
+	duration: 274,
+	coverPath: "static/img/bicep.jpg",
+	key: 4,
+};
 
 let volume = 5;
 let isMuted = false;

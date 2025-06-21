@@ -7,7 +7,7 @@ function createNewSongInfo(link, track, artist, duration, coverPath, key) {
 		track: track,
 		artist: artist,
 		duration: duration,
-		coverPath: coverPath,
+		coverPath: "static/img/" + coverPath,
 		key: key,
 	};
 }
