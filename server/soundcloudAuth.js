@@ -2,6 +2,10 @@ import fetch from "node-fetch";
 import "dotenv/config";
 import { promises as fs } from "fs";
 
+const TOKEN_ENDPOINT = "https://api.soundcloud.com/oauth2/token";
+const CALLBACK_URI = "https://trackhammer.mit.edu/callback";
+const TOKEN_DIR = "../tokenData.json";
+
 export async function initWithCode(code) {
 	// Request authentication token from Soundcloud
 	// See https://developers.soundcloud.com/docs/api/guide#authentication
@@ -33,7 +37,7 @@ export async function initWithCode(code) {
 		expires_at: Date.now() + expires_in * 1000,
 	};
 	let tokenDataJSON = JSON.stringify(tokenData, null, 2);
-	fs.writeFile("../tokenData.json", tokenDataJSON, "utf8");
+	fs.writeFile(TOKEN_DIR, tokenDataJSON, "utf8");
 
 	return access_token;
 }
@@ -48,7 +52,7 @@ export async function getAccessToken() {
 	} catch (err) {
 		throw new Error("No token data found - Authenticate first");
 	}
-	if (Date.now() > tokens.expires_at - 60_000) {
+	if (Date.now() > tokenData.expires_at - 60_000) {
 		// refresh if expired / near-expiry
 		const params = new URLSearchParams({
 			client_id: process.env.SOUNDCLOUD_CLIENT_ID,
@@ -74,7 +78,7 @@ export async function getAccessToken() {
 			refresh_token: json.refresh_token || tokenData.refresh_token,
 			expires_at: Date.now() + json.expires_in * 1000,
 		};
-		await fs.writeFile(TOKEN_STORE, JSON.stringify(tokenData, null, 2), "utf8");
+		await fs.writeFile(TOKEN_DIR, JSON.stringify(tokenData, null, 2), "utf8");
 	}
-	return tokens.access_token;
+	return tokenData.access_token;
 }
