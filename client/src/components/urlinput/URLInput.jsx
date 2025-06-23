@@ -11,24 +11,25 @@ export default function URLInput() {
 
 	// Define function for action upon press
 	async function submitSong() {
-		// if (!url.trim()) return;
-		// socket.emit("addSong", url, (response) => {
-		// 	if (response.success) {
-		// 		setShowError(false);
-		// 	} else if (response.error === undefined) {
-		// 		setErrorText("Did not recieve a response from server");
-		// 		setShowError(true);
-		// 	} else {
-		// 		setErrorText(response.error);
-		// 		setShowError(true);
-		// 	}
-		// });
-		// setUrl("");
-		window.location =
-			`https://soundcloud.com/connect` +
-			`?client_id=${"RnDqXwDyKyyo41bjlY5hSktjmAOu2D5s"}` +
-			`&redirect_uri=https://trackhammer.mit.edu/callback` +
-			`&response_type=code`;
+		if (!url.trim()) return;
+		socket.emit("addSong", url, (response) => {
+			if (response.success) {
+				setShowError(false);
+				setErrorText("");
+			} else if (response.error === undefined) {
+				setErrorText("Did not recieve a response from server");
+				setShowError(true);
+			} else {
+				setErrorText(response.error);
+				setShowError(true);
+			}
+		});
+		setUrl("");
+		// 	window.location =
+		// 		`https://soundcloud.com/connect` +
+		// 		`?client_id=${"RnDqXwDyKyyo41bjlY5hSktjmAOu2D5s"}` +
+		// 		`&redirect_uri=https://trackhammer.mit.edu/callback` +
+		// 		`&response_type=code`;
 	}
 
 	// Update the value of the url every time it's changed
@@ -64,7 +65,7 @@ export default function URLInput() {
 				</button>
 			</div>
 			{/* Conditionally render error messages to the user */}
-			<div className={`Error${showError ? " visible" : ""}`}>{errorText}</div>
+			<div className={showError ? "Error Visible" : "Error"}>{errorText}</div>
 		</div>
 	);
 }
