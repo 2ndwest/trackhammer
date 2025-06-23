@@ -1,113 +1,70 @@
 import { arrayMoveImmutable } from "array-move";
+// import { getAccessToken } from "../soundcloudAuth.js";
+import { addToQueue, getAccessToken } from "../utils/soundcloudUtils.js";
+import "dotenv/config";
 
-// Populate dummy queue
-function createNewSongInfo(link, track, artist, duration, coverPath, key) {
-	return {
-		link: link,
-		track: track,
-		artist: artist,
-		duration: duration,
-		coverPath: "static/img/" + coverPath,
-		key: key,
-	};
-}
-let keyTracker = 9;
+let keyTracker = 1;
+const CLIENT_ID = process.env.SOUNDCLOUD_CLIENT_ID;
 
 // Temporary test queue
-let ctrl_alt_reality = "ctrl-alt-reality.jpg";
 let link = "https://google.com";
-let queue = [
-	createNewSongInfo(
-		"https://soundcloud.com/djshadow/building-steam-with-a-grain-2",
-		"Building Steam with a Grain of Salt",
-		"DJ Shadow",
-		399,
-		"endtroducing.jpg",
-		1,
-	),
-	createNewSongInfo(
-		"https://soundcloud.com/theglitchmob/the-glitch-mob-depth-charge",
-		"Depth Charge",
-		"The Glitch Mob",
-		394,
-		"ctrl-alt-reality.jpg",
-		2,
-	),
-	createNewSongInfo(
-		"https://soundcloud.com/jonhopkins/the-wider-sun-vessel",
-		"Vessel",
-		"Jon Hopkins",
-		282,
-		"insides.jpg",
-		3,
-	),
-	createNewSongInfo(
-		"https://soundcloud.com/massiveattack/inertia-creeps-remastered-2018",
-		"Inertia Creeps",
-		"Massive Attack",
-		357,
-		"mezzanine.jpg",
-		4,
-	),
-	createNewSongInfo(
-		"https://soundcloud.com/moderat-official/undo-redo-1",
-		"UNDO REDO",
-		"Moderat",
-		278,
-		"more-data.jpg",
-		5,
-	),
-	createNewSongInfo(
-		"https://soundcloud.com/yunna-music/ride-out",
-		"Ride Out",
-		"Yunna",
-		288,
-		"the-arrival.jpg",
-		6,
-	),
-	createNewSongInfo(
-		"https://soundcloud.com/burial-uk-1/archangel",
-		"Archangel",
-		"Burial",
-		238,
-		"untrue.jpg",
-		7,
-	),
-	createNewSongInfo(
-		"https://soundcloud.com/kettamabro/kettama-interplanetary-criminal-yosemite-1",
-		"Yosemite",
-		"Kettama",
-		362,
-		"yosemite.jpg",
-		8,
-	),
-];
+let queue = [];
+let key = 0;
+// let queue = [
+// 	createNewSongInfo(
+// 		"https://soundcloud.com/djshadow/building-steam-with-a-grain-2",
+// 		"https://soundcloud.com/djshadow/building-steam-with-a-grain-2",
+// 		"Building Steam with a Grain of Salt",
+// 		"DJ Shadow",
+// 		399,
+// 		"https://i1.sndcdn.com/artworks-aQmuuZePnaRi-0-large.jpg",
+// 		1,
+// 	),
+// ];
 
 export default function setupQueueLogic(socket, io) {
 	// Send the current queue to the newly connected client
 	socket.emit("updateQueue", queue);
 
 	// Add song
-	socket.on("addSong", (url, callback) => {
+	socket.on("addSong", async (url, callback) => {
+		// Reauthenticate
+		const token = await getAccessToken();
 		try {
-			queue.push(
-				createNewSongInfo(
-					url,
-					"Test Song",
-					"SNTS",
-					300,
-					"ctrl-alt-reality.jpg",
-					keyTracker,
-				),
+			// Get track information from soundcloud URL
+			const res = await fetch(
+				`https://api.soundcloud.com/resolve?url=${encodeURIComponent(url)}`,
+				{
+					headers: { Authorization: `OAuth ${token}` },
+				},
 			);
 
-			keyTracker++;
-			console.log(url);
+			if (!res.ok) {
+				const body = await res.text();
+				console.log(res.status);
+				if (res.status == 404) {
+					callback({
+						success: false,
+						error:
+							"Couldn't find anything at that address. Is it a valid SoundCloud link?",
+					});
+				}
+				throw new Error(`SC resolve failed: ${res.status} ${body}`);
+				return;
+			}
+
 			callback({ success: true });
+
+			const resJSON = await res.json();
+			// Add new song to the queue
+			queue = await addToQueue(resJSON, queue, token, keyTracker);
+			keyTracker++;
+			callback({ success: true });
+			io.emit("updateQueue", queue);
 		} catch (err) {
-			callback({ success: false, error: err.message });
+			console.log(err);
+			return;
 		}
-		io.emit("updateQueue", queue);
 	});
 
 	// Delete song by ID
@@ -136,4 +93,6 @@ export default function setupQueueLogic(socket, io) {
 
 		io.emit("updateQueue", queue);
 	});
+
+	socket.emit("addSong", "https://soundcloud.com/massiveattack/inertia-creeps");
 }
