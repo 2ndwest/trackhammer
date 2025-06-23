@@ -72,7 +72,7 @@ export default function QueueItem({
 			<td className="Column Album">
 				<img
 					draggable="false"
-					src={songInfo.coverPath}
+					src={songInfo.coverURL}
 					alt={songInfo.track}
 					className="Thumbnail"
 				/>
@@ -87,7 +87,7 @@ export default function QueueItem({
 				<div className={isHovered ? "Info-Text Darkened" : "Info-Text"}>
 					<a
 						className="Title-Link"
-						href={songInfo.link}
+						href={songInfo.permaURL}
 						target="_blank"
 						rel="noreferrer"
 						draggable="false"

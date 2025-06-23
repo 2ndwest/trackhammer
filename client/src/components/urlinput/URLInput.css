@@ -51,17 +51,17 @@
 }
 
 .Error {
-	color: var(--error-red);
-	padding: 8px 12px;
+	padding: 12px 0px 0px 8px;
 	text-align: left;
 	font-size: 0.8rem;
 	opacity: 0;
 	transition: opacity 0.1s ease-in;
-	transform: translateY(-5px);
 }
 
-.Error.visible {
+.Error.Visible {
 	opacity: 1;
+	color: var(--error-red);
+	border: 0;
 }
 
 @media (max-width: 30rem) {
