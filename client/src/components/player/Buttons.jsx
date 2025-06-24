@@ -44,14 +44,14 @@ export default function Buttons({ resetSongCallback, skipSongCallback }) {
 	// Local then updates when it hears back from server to keep in sync
 	function raiseVolumeCallback() {
 		socket.emit("raiseVolume");
-		if (volume < 10) {
-			setVolume(volume + 0.5);
+		if (volume < 100) {
+			setVolume(volume + 5);
 		}
 	}
 	function lowerVolumeCallback() {
 		socket.emit("lowerVolume");
 		if (volume > 0) {
-			setVolume(volume - 0.5);
+			setVolume(volume - 5);
 		}
 	}
 	function changeMutedState() {
@@ -73,7 +73,7 @@ export default function Buttons({ resetSongCallback, skipSongCallback }) {
 								? faVolumeXmark
 								: volume === 0
 									? faVolumeOff
-									: volume < 5
+									: volume < 50
 										? faVolumeLow
 										: faVolumeHigh
 						}
@@ -82,7 +82,7 @@ export default function Buttons({ resetSongCallback, skipSongCallback }) {
 				<div className="Volume-Meter-Container">
 					<meter
 						className={isMuted ? "Volume-Meter Muted" : "Volume-Meter"}
-						max="10"
+						max="100"
 						value={volume}
 					></meter>
 					<div className="Volume-Buttons-Container">

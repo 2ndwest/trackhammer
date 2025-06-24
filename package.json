@@ -13,6 +13,7 @@
 	"dependencies": {
 		"@fortawesome/free-solid-svg-icons": "^6.7.2",
 		"@fortawesome/react-fontawesome": "^0.2.2",
-		"node-fetch": "^3.3.2"
+		"node-fetch": "^3.3.2",
+		"yt-dlp-wrap": "^2.3.12"
 	}
 }

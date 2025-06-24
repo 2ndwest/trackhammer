@@ -37,13 +37,18 @@ export default function Player() {
 		: 0;
 
 	return (
-		<div className={songInfo === 0 ? "Player-Empty" : "Player"}>
+		<div className={songInfo ? "Player" : "Player-Empty"}>
 			<div className="Album-Container">
-				<img src={songInfo.coverPath} alt={songInfo.track} />
+				<img src={songInfo.coverURL} alt={songInfo.track} draggable="false" />
 			</div>
 			<div className="Player-Body">
 				<div className="Track-Container Fade-Out">
-					<a href={songInfo.link} target="_blank" rel="noreferrer">
+					<a
+						href={songInfo.permaURL}
+						target="_blank"
+						rel="noreferrer"
+						draggable="false"
+					>
 						{songInfo.track}
 					</a>
 				</div>
