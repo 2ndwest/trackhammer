@@ -25,11 +25,11 @@ export default function URLInput() {
 			}
 		});
 		setUrl("");
-		// 	window.location =
-		// 		`https://soundcloud.com/connect` +
-		// 		`?client_id=${"RnDqXwDyKyyo41bjlY5hSktjmAOu2D5s"}` +
-		// 		`&redirect_uri=https://trackhammer.mit.edu/callback` +
-		// 		`&response_type=code`;
+		// window.location =
+		// 	`https://soundcloud.com/connect` +
+		// 	`?client_id=${"RnDqXwDyKyyo41bjlY5hSktjmAOu2D5s"}` +
+		// 	`&redirect_uri=https://trackhammer.mit.edu/callback` +
+		// 	`&response_type=code`;
 	}
 
 	// Update the value of the url every time it's changed

@@ -10,7 +10,7 @@ export function getTimeString(time) {
 	if (minutes.length === 2 && hours !== "") {
 		minutes = "0" + minutes; // Append 0 if single digits
 	}
-	seconds = time % 60;
+	seconds = parseInt(time % 60);
 	if (seconds < 10) {
 		seconds = "0" + seconds; // Append 0 if single digits
 	}

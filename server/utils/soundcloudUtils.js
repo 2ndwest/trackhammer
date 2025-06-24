@@ -2,9 +2,9 @@ import fetch from "node-fetch";
 import "dotenv/config";
 import fs, { promises as fsp } from "fs";
 import { exec } from "child_process";
-import ffmpeg from "fluent-ffmpeg";
-import ffmpegStatic from "ffmpeg-static";
 import path from "path";
+import ytdlp from "yt-dlp-exec";
+import { notifyPlayer } from "../sockets/playback.js"
 
 const TOKEN_ENDPOINT = "https://api.soundcloud.com/oauth2/token";
 const CALLBACK_URI = "https://trackhammer.mit.edu/callback";
@@ -39,7 +39,6 @@ export async function initWithCode(code) {
 		body: params.toString(),
 	});
 
-	console.log(res);
 	if (!res.ok) throw new Error("Token exchange failed");
 	const { access_token, refresh_token, expires_in } = await res.json();
 
@@ -99,85 +98,73 @@ export async function getAccessToken() {
 // FUNCTIONS FOR ADDING A NEW SONG TO THE QUEUE //
 //////////////////////////////////////////////////
 
-export async function addToQueue(songJSON, queue, token, key) {
-	// Gets list of already downloaded tracks
-	let tracks = fs.readdirSync(TRACK_DIR);
-	if (!tracks.includes(songJSON.title + ".mp3")) {
-		// Not awaited so that we can add to the client queue before download is finished
-		downloadTrack(songJSON, tracks);
+export async function getJSON(url, token) {
+	// Get track information from soundcloud URL
+	const res = await fetch(
+		`https://api.soundcloud.com/resolve?url=${encodeURIComponent(url)}`,
+		{
+			headers: { Authorization: `OAuth ${token}` },
+		},
+	);
+
+	const status = 0;
+
+	if (!res.ok) {
+		let status = 1;
+		const body = await res.text();
+		if (res.status == 404) {
+			status = 404;
+		}
+		return { status };
 	}
 
-	const newSong = createNewSongInfo(songJSON, key);
+	return { status: status, resJSON: await res.json() };
+}
+
+export function addToQueue(resJSON, queue, token, key) {
+	const newSong = createNewSongInfo(resJSON, key);
 	queue.push(newSong);
 	return queue;
 }
 
 function createNewSongInfo(songJSON, key) {
+	let artist = "Not Listed";
+	if (songJSON.metadata_artist) artist = songJSON.metadata_artist;
 	return {
 		permaURL: songJSON.permalink_url,
 		track: songJSON.title,
-		artist: songJSON.metadata_artist,
+		artist: artist,
 		duration: parseInt(songJSON.duration / 1000),
 		coverURL: songJSON.artwork_url,
 		key: key,
+		ready: false,
 	};
 }
 
 // Downloads a track to the tracks directory
 // Uses https://github.com/AYehia0/soundcloud-dl
 // This is so ugly lmao
-async function downloadTrack(songJSON) {
+export async function downloadTrack(songJSON) {
 	const url = songJSON.permalink_url;
 	const trackName = songJSON.title;
 
-	return new Promise(function (resolve, reject) {
-		// Download the file to tracks dir
-		exec(
-			PROJ_DIR + "bin/soundcloud-dl -b -p " + PROJ_DIR + "tracks/ " + url,
-			(err, stdout, stderr) => {
-				if (err) {
-					reject(err);
-				} else {
-					cleanupTrack(trackName);
-					resolve({ stdout, stderr });
-				}
-			},
-		);
+	await ytdlp(url, {
+		extractAudio: true,
+		cookies: PROJ_DIR + "sc_cookies.txt",
+		"audio-format": "mp3",
+		"audio-quality": "0",
+		output: TRACK_DIR + trackName + "-temp.mp3",
 	});
+
+	await cleanupTrack(trackName);
+	console.log("Finished Downloading " + trackName);
 }
 
 // Makes the filename equivalent to the track name
 async function cleanupTrack(trackName) {
+	const finalPath = TRACK_DIR + trackName;
 	let tracks = fs.readdirSync(TRACK_DIR);
-	for (const track of tracks) {
-		if (track.lastIndexOf(trackName, 0) === 0) {
-			convertAndRename(TRACK_DIR + track, TRACK_DIR + trackName + ".mp3");
-		}
+	if (tracks.includes(trackName + "-temp.mp3")) {
+		fsp.rename(finalPath + "-temp.mp3", finalPath + ".mp3");
 	}
-}
-
-async function convertAndRename(inputPath, outputPath) {
-	// Get extension of original file
-	// If it doesn't need conversion we'll skip it
-	const ext = path.extname(inputPath).toLowerCase();
-
-	if (inputPath === outputPath) {
-		return;
-	} else if (ext === ".mp3") {
-		fsp.rename(inputPath, outputPath);
-		return;
-	}
-
-	return new Promise((resolve, reject) => {
-		ffmpeg(inputPath)
-			.format("mp3")
-			.audioCodec("libmp3lame")
-			.on("error", reject)
-			.on("end", () => {
-				fs.unlink(inputPath, () => {
-					resolve();
-				});
-			}) // Delete file after finishing conversion
-			.save(outputPath);
-	});
 }
