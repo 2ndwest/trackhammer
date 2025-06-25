@@ -3,7 +3,7 @@ import { getNextSong } from "./queue.js";
 
 let activeSong = false;
 
-let volume = 5;
+let volume = 50;
 let isMuted = false;
 let isPlaying = false;
 let queue = [];
@@ -11,13 +11,11 @@ let io = null;
 
 // Allows the queue to tell player when a new song has been added
 export function notifyPlayer() {
-	console.log("Player notified: " + activeSong);
 	if (!activeSong) playNextSong();
 }
 
 export function playNextSong() {
 	activeSong = getNextSong();
-	console.log("playNextSong(): " + activeSong);
 	if (!activeSong) {
 		isPlaying: false;
 		return;

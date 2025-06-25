@@ -1,11 +1,18 @@
-import ptz from "../../resources/ptz.svg";
+import { ReactComponent as Logo } from "../../resources/ptz.svg";
 import "./PTZHeader.css";
 
 // Define function for PTZ Logo
 export default function PTZHeader() {
 	return (
 		<header className="App-header">
-			<img src={ptz} className="App-logo" alt="PUTZ Logo" draggable="false" />
+			<a
+				href="https://soundcloud.com/discover"
+				target="_blank"
+				rel="noreferrer"
+				draggable="false"
+			>
+				<Logo className="App-logo" alt="PUTZ Logo" draggable="false" />
+			</a>
 		</header>
 	);
 }

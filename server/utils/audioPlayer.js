@@ -5,7 +5,7 @@ class AudioPlayer {
 	constructor(timeCallback) {
 		this.TRACK_DIR = process.cwd() + "/tracks/";
 
-		this.player = spawn("mpg123", ["-R", "-o", "alsa", "-a", "pipewire"], {
+		this.player = spawn("mpg123", ["-R", "-o", "pulse"], {
 			stdio: ["pipe", "pipe", "inherit"],
 		});
 
@@ -16,6 +16,13 @@ class AudioPlayer {
 		this.timeCallback = timeCallback;
 
 		this.isPlaying = false;
+
+		// Compute logarithmic volume array
+		this.volumeLevels = [];
+		const base = 1.258;
+		for (let i = 0; i <= 20; i++) {
+			this.volumeLevels.push(base ** i);
+		}
 	}
 
 	// Handle data like playback progress and status
@@ -70,7 +77,8 @@ class AudioPlayer {
 	}
 
 	setVolume(percent) {
-		this.player.stdin.write(`VOLUME ${percent}\n`);
+		let volumeLevel = this.volumeLevels[parseInt(percent / 5)];
+		this.player.stdin.write(`VOLUME ${volumeLevel}\n`);
 	}
 
 	mute() {

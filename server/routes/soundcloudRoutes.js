@@ -1,4 +1,4 @@
-import { initWithCode } from "../soundcloudAuth.js";
+import { initWithCode } from "../utils/soundcloudUtils.js";
 
 export default function setupSoundCloudRoute(app) {
 	app.get("/callback", async (req, res) => {
