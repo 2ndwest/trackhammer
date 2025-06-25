@@ -1,11 +1,11 @@
 import { spawn } from "child_process";
-import { timeCallback } from "../sockets/playback.js";
+import { timeCallback, playNextSong } from "../sockets/playback.js";
 
 class AudioPlayer {
 	constructor(timeCallback) {
 		this.TRACK_DIR = process.cwd() + "/tracks/";
 
-		this.player = spawn("mpg123", ["-R", "-o", "alsa", "-a", "default"], {
+		this.player = spawn("mpg123", ["-R", "-o", "alsa", "-a", "pipewire"], {
 			stdio: ["pipe", "pipe", "inherit"],
 		});
 
@@ -21,17 +21,25 @@ class AudioPlayer {
 	// Handle data like playback progress and status
 	handlePlayerData(data) {
 		data = data.trim();
-		if (!data.startsWith("@F")) return;
 
-		// @F frameCount framesLeft elapsedSeconds secondsLeft
-		const parts = data.split(/\s+/);
-		const elapsed = parseFloat(parts[3]);
-		if (elapsed - this.lastElapsed > 0.1) {
-			this.lastElapsed = elapsed;
-			timeCallback(elapsed);
+		// Handle frame updates (for song time)
+		if (data.startsWith("@F")) {
+			// @F frameCount framesLeft elapsedSeconds secondsLeft
+			const parts = data.split(/\s+/);
+			const elapsed = parseFloat(parts[3]);
+			if (parseInt(parts[1]) < 10) this.lastElapsed = 0;
+			if (elapsed - this.lastElapsed > 0.1) {
+				this.lastElapsed = elapsed;
+				timeCallback(elapsed);
+			}
 		}
 
-		console.log(`Elapsed seconds: ${elapsed.toFixed(1)}s`);
+		// Handle end of file event for next song
+		if (data.startsWith("@P")) {
+			const parts = data.split(/\s+/);
+			if (parts[1] == 3) playNextSong();
+			console.log("Reached end of song");
+		}
 	}
 
 	play(trackName) {
@@ -40,8 +48,10 @@ class AudioPlayer {
 			this.stop(); // Stop current track if already playing
 		}
 		console.log(`Playing track: ${trackName}`);
-		this.player.stdin.write(`LOAD ${trackUrl}\n`);
+		//soundcloud.com/kasbomusic/burial-archangel-kasbo-club-edit
+		https: this.player.stdin.write(`LOAD ${trackUrl}\n`);
 		this.isPlaying = true;
+		this.lastElapsed = 0;
 	}
 
 	pause() {
@@ -55,7 +65,7 @@ class AudioPlayer {
 		if (this.isPlaying) {
 			this.player.stdin.write("STOP\n");
 			this.isPlaying = false;
-			console.log("Stopped");
+			console.log("Playback Stopped");
 		}
 	}
 

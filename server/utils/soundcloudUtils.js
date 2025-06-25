@@ -128,8 +128,9 @@ export function addToQueue(resJSON, queue, token, key) {
 }
 
 function createNewSongInfo(songJSON, key) {
-	let artist = "Not Listed";
+	let artist = undefined;
 	if (songJSON.metadata_artist) artist = songJSON.metadata_artist;
+	else artist = songJSON.user.username
 	return {
 		permaURL: songJSON.permalink_url,
 		track: songJSON.title,
