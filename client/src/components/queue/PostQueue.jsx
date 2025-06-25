@@ -2,7 +2,6 @@ import "./Queue.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
-import soundcloud from "../../resources/sc-logo.png";
 
 export default function Trash({
 	activeDragKey,
@@ -42,20 +41,6 @@ export default function Trash({
 			>
 				<FontAwesomeIcon icon={faTrash} />
 			</div>
-			<a
-				className="SC-Logo-Link"
-				href="https://soundcloud.com"
-				target="_blank"
-				rel="noreferrer"
-				draggable="false"
-			>
-				<img
-					className="SC-Logo"
-					src={soundcloud}
-					alt="Powered by Soundcloud"
-					draggable="false"
-				/>
-			</a>
 		</div>
 	);
 }

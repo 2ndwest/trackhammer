@@ -117,14 +117,24 @@ export async function getJSON(url, token) {
 		}
 		return { status };
 	}
-
 	return { status: status, resJSON: await res.json() };
 }
 
 export function addToQueue(resJSON, queue, token, key) {
-	const newSong = createNewSongInfo(resJSON, key);
-	queue.push(newSong);
-	return queue;
+	console.log(resJSON);
+	if (resJSON.kind === "track") {
+		const newSong = createNewSongInfo(resJSON, key);
+		queue.push(newSong);
+		return queue;
+	} else if (resJSON.kind === "playlist") {
+		resJSON.tracks.forEach((song, idx) => {
+			const newSong = createNewSongInfo(song, key);
+			queue.push(newSong);
+			key += 1;
+		})
+		console.log(queue);
+		return queue;
+	}
 }
 
 function createNewSongInfo(songJSON, key) {
@@ -138,7 +148,6 @@ function createNewSongInfo(songJSON, key) {
 		duration: parseInt(songJSON.duration / 1000),
 		coverURL: songJSON.artwork_url,
 		key: key,
-		ready: false,
 	};
 }
 
@@ -146,8 +155,8 @@ function createNewSongInfo(songJSON, key) {
 // Uses https://github.com/AYehia0/soundcloud-dl
 // This is so ugly lmao
 export async function downloadTrack(songJSON) {
-	const url = songJSON.permalink_url;
-	const trackName = songJSON.title;
+	const url = songJSON.permaURL;
+	const trackName = songJSON.track;
 
 	await ytdlp(url, {
 		extractAudio: true,
@@ -158,7 +167,6 @@ export async function downloadTrack(songJSON) {
 	});
 
 	await cleanupTrack(trackName);
-	console.log("Finished Downloading " + trackName);
 }
 
 // Makes the filename equivalent to the track name

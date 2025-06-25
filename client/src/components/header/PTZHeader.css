@@ -3,8 +3,19 @@
 	display: flex;
 	align-items: flex-end;
 	justify-content: center;
+	fill: white;
 }
 
 .App-logo {
 	width: clamp(10vw, 20rem, 60vw);
+	height: 8rem;
+	transition-duration: 0.15s;
+}
+
+.App-logo:hover {
+	fill: silver;
+}
+
+.App-logo:active {
+	fill: var(--bg-highlight);
 }
