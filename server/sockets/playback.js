@@ -6,7 +6,6 @@ let activeSong = false;
 let volume = 5;
 let isMuted = false;
 let isPlaying = false;
-let progressSeconds = 120; // Integer in seconds
 let queue = [];
 let io = null;
 
@@ -16,24 +15,22 @@ export function notifyPlayer() {
 	if (!activeSong) playNextSong();
 }
 
-function playNextSong() {
+export function playNextSong() {
 	activeSong = getNextSong();
 	console.log("playNextSong(): " + activeSong);
 	if (!activeSong) {
 		isPlaying: false;
 		return;
 	}
-	progressSeconds = 0;
 	isPlaying = true;
 	io.emit("updateSong", activeSong);
-	io.emit("updateProgress", progressSeconds);
 	io.emit("updatePlaybackState", isPlaying);
 	AudioPlayer.setVolume(volume);
 	AudioPlayer.play(activeSong.track);
 }
 
 export function timeCallback(seconds) {
-	io.emit("updateProgress", seconds)
+	io.emit("updateProgress", seconds);
 }
 
 // socket is the individual connection, io is all connected clients
@@ -43,7 +40,7 @@ export default function setupPlaybackLogic(socket, ioInput) {
 	socket.emit("updateSong", activeSong);
 	socket.emit("updateVolume", volume);
 	socket.emit("updateMutedState", isMuted);
-	socket.emit("updateProgress", progressSeconds);
+	socket.emit("updateProgress", 0);
 	socket.emit("updatePlaybackState", isPlaying);
 
 	// Note that in the player class, volume is processed logarithmically.
@@ -76,11 +73,9 @@ export default function setupPlaybackLogic(socket, ioInput) {
 	});
 
 	socket.on("resetSongProgress", () => {
-		progressSeconds = 0;
 		isPlaying = true;
 		AudioPlayer.play(activeSong.track);
 		console.log("Restarting song progress");
-		io.emit("updateProgress", progressSeconds);
 	});
 
 	socket.on("skipSong", () => {
