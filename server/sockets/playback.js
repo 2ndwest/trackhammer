@@ -24,7 +24,7 @@ export function playNextSong() {
 	io.emit("updateSong", activeSong);
 	io.emit("updatePlaybackState", isPlaying);
 	AudioPlayer.setVolume(volume);
-	AudioPlayer.play(activeSong.track);
+	AudioPlayer.play(activeSong.title);
 }
 
 export function timeCallback(seconds) {
@@ -72,7 +72,7 @@ export default function setupPlaybackLogic(socket, ioInput) {
 
 	socket.on("resetSongProgress", () => {
 		isPlaying = true;
-		AudioPlayer.play(activeSong.track);
+		AudioPlayer.play(activeSong.title);
 		console.log("Restarting song progress");
 	});
 
