@@ -21,6 +21,7 @@ async function addItem(url, callback) {
 	const token = await getAccessToken();
 	try {
 		let { status, resJSON } = await getJSON(url, token);
+		console.log(status);
 		const success = sendClientCallback(callback, status, resJSON);
 		if (!success) return;
 
