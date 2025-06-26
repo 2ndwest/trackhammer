@@ -73,7 +73,7 @@ export default function QueueItem({
 				<img
 					draggable="false"
 					src={songInfo.coverURL}
-					alt={songInfo.track}
+					alt={songInfo.title}
 					className="Thumbnail"
 				/>
 			</td>
@@ -92,7 +92,7 @@ export default function QueueItem({
 						rel="noreferrer"
 						draggable="false"
 					>
-						{songInfo.track}
+						{songInfo.title}
 					</a>
 				</div>
 			</td>

@@ -3,8 +3,8 @@ import {
 	addToQueue,
 	getAccessToken,
 	getJSON,
-	downloadTrack,
 } from "../utils/soundcloudUtils.js";
+import DownloadManager from "../utils/downloadManager.js";
 import { notifyPlayer } from "./playback.js";
 import "dotenv/config";
 import fs from "fs";
@@ -12,9 +12,9 @@ import fs from "fs";
 const CLIENT_ID = process.env.SOUNDCLOUD_CLIENT_ID;
 const TRACK_DIR = process.cwd() + "/tracks/";
 let queue = [];
-let currentlyDownloading = [];
 let keyTracker = 0;
 let io = null;
+let downloadManager = new DownloadManager();
 
 async function addItem(url, callback) {
 	// Reauthenticate
@@ -26,27 +26,12 @@ async function addItem(url, callback) {
 
 		// Add new song to the queue
 		queue = addToQueue(resJSON, queue, token, keyTracker);
+		console.log(queue);
 		io.emit("updateQueue", queue);
 		keyTracker++;
-		console.log("Appended a new song to the queue");
-		console.log(queue[queue.length - 1]);
 
-		let tracks = fs.readdirSync(TRACK_DIR);
-		let isCurrentlyDownloading = currentlyDownloading.includes(resJSON.title);
-
-		queue.forEach(async (songInfo) => {
-			// Return if already downloaded or downloading
-			if (tracks.includes(songInfo.track + ".mp3")) return;
-			if (currentlyDownloading.includes(songInfo.track)) return;
-
-			currentlyDownloading.push(songInfo.track);
-			await downloadTrack(songInfo);
-			currentlyDownloading = currentlyDownloading.filter(
-				(e) => e !== songInfo.track,
-			);
-			console.log("Notifying Player");
-			notifyPlayer();
-		});
+		// Download new songs
+		// await downloadManager.updateQueue(queue);
 	} catch (err) {
 		console.log(err);
 		return;
@@ -117,7 +102,7 @@ export function getNextSong() {
 	// Check if next track is ready
 	// If it's not, it'll play when addItem() calls notifyPlayer()
 	let tracks = fs.readdirSync(TRACK_DIR);
-	if (!tracks.includes(queue[0].track + ".mp3")) return false;
+	if (!tracks.includes(queue[0].title + ".mp3")) return false;
 
 	// Otherwise shift the songInfo out of the queue and return it
 	const removedSong = queue.shift();

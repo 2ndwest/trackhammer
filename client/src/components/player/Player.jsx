@@ -39,7 +39,7 @@ export default function Player() {
 	return (
 		<div className={songInfo ? "Player" : "Player-Empty"}>
 			<div className="Album-Container">
-				<img src={songInfo.coverURL} alt={songInfo.track} draggable="false" />
+				<img src={songInfo.coverURL} alt={songInfo.title} draggable="false" />
 			</div>
 			<div className="Player-Body">
 				<div className="Track-Container Fade-Out">
@@ -49,7 +49,7 @@ export default function Player() {
 						rel="noreferrer"
 						draggable="false"
 					>
-						{songInfo.track}
+						{songInfo.title}
 					</a>
 				</div>
 				<div className="Artist-Container Fade-Out">

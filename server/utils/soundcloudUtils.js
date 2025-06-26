@@ -132,7 +132,6 @@ export function addToQueue(resJSON, queue, token, key) {
 			queue.push(newSong);
 			key += 1;
 		})
-		console.log(queue);
 		return queue;
 	}
 }
@@ -143,7 +142,7 @@ function createNewSongInfo(songJSON, key) {
 	else artist = songJSON.user.username
 	return {
 		permaURL: songJSON.permalink_url,
-		track: songJSON.title,
+		title: songJSON.title,
 		artist: artist,
 		duration: parseInt(songJSON.duration / 1000),
 		coverURL: songJSON.artwork_url,
@@ -156,7 +155,7 @@ function createNewSongInfo(songJSON, key) {
 // This is so ugly lmao
 export async function downloadTrack(songJSON) {
 	const url = songJSON.permaURL;
-	const trackName = songJSON.track;
+	const trackName = songJSON.title;
 
 	await ytdlp(url, {
 		extractAudio: true,
