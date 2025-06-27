@@ -1,74 +1,115 @@
 import ytdlp from "yt-dlp-exec";
 import fs, { promises as fsp } from "fs";
+import { notifyPlayer } from "../sockets/playback.js";
 
 const TRACK_DIR = process.cwd() + "/tracks/";
 const PROJ_DIR = process.cwd() + "/";
 
 export default class DownloadManager {
 	constructor() {
-		this.downloadCap = 4;
+		this.downloadCap = 5;
 		this.downloadQueue = [];
 		this.currentlyDownloading = [];
 		this.downloaderRunning = false;
+		this.throttleMode = false;
 	}
 
 	// Takes in the queue from playback and adds songs that need downloading
 	async updateQueue(queue) {
-		console.log("Updating Queue");
+		this.downloadQueue = [];
 		for (const songInfo of queue) {
 			let tracks = fs.readdirSync(TRACK_DIR);
 			let dlQueueTitles = this.downloadQueue.map((song) => song.title);
 
-			if (tracks.includes(songInfo.title + ".mp3")) return;
-			if (dlQueueTitles.includes(songInfo.title)) return;
-			if (this.currentlyDownloading.includes(songInfo.title)) return;
+			if (tracks.includes(songInfo.title + ".mp3")) continue;
+			if (dlQueueTitles.includes(songInfo.title)) continue;
+			if (this.currentlyDownloading.includes(songInfo.title)) continue;
 			this.downloadQueue.push(songInfo);
 		}
-		console.log("downloader running" + this.downloaderRunning);
+		if (this.downloadQueue.length > 100) {
+			this.throttleMode = true;
+			console.log("Queue is long - enabling throttling");
+		}
+		console.log(this.downloaderRunning);
 		if (!this.downloaderRunning) this.runDownloader();
 	}
 
 	// Runs forever, constantly keeps downloads running up to a cap
 	async runDownloader() {
-		console.log(this.downloadQueue);
 		this.downloaderRunning = true;
-		console.log("running downloader");
-		while (
-			this.currentlyDownloading < this.downloadCap &&
-			this.downloadQueue.length != 0
-		) {
-			console.log("looping");
-			let nextSongInfo = this.downloadQueue.shift(0);
-			this.downloadTrack(nextSongInfo);
 
-			// Waits until downloadTrack calls wake for next track
-			await new Promise((r) => (this._wake = r));
-			this._wake = null;
-			console.log("finished download");
+		const inFlight = new Set();
+
+		while (this.downloadQueue.length > 0) {
+			//
+			// Inner loop for keeping downloads topped off
+			while (
+				this.currentlyDownloading.length < this.downloadCap &&
+				this.downloadQueue.length > 0
+			) {
+				let nextSongInfo = this.downloadQueue.shift();
+				try {
+					this.downloadTrack(nextSongInfo, inFlight);
+				} catch (error) {
+					console.error(error);
+					await new Promise((r) => setTimeout(r, 20000));
+				}
+			}
+
+			console.log("Currently Downloading: " + this.currentlyDownloading);
+			// Wait for any download to finish (Promise.race) and then start a new one
+			if (this.currentlyDownloading.length === this.downloadCap) {
+				await Promise.race([...inFlight]);
+			}
+
+			notifyPlayer();
 		}
-		console.log("line50");
 		this.downloaderRunning = false;
 	}
 	// Downloads a track to the tracks directory
 	// Uses https://github.com/AYehia0/soundcloud-dl
-	async downloadTrack(songInfo) {
+	async downloadTrack(songInfo, inFlight) {
 		const url = songInfo.permaURL;
 		const trackName = songInfo.title;
 		this.currentlyDownloading.push(songInfo.title);
 
-		await ytdlp(url, {
+		const downloadPromise = ytdlp(url, {
 			extractAudio: true,
 			cookies: PROJ_DIR + "sc_cookies.txt",
 			"audio-format": "mp3",
 			"audio-quality": "0",
+			"retry-sleep": "2000",
+			"extractor-retries": "10",
 			output: TRACK_DIR + trackName + "-temp.mp3",
 		});
 
-		await this.cleanupTrack(trackName);
-		this.currentlyDownloading = this.currentlyDownloading.filter(
-			(e) => e !== songInfo.track,
-		);
-		if (this._wake) this._wake();
+		inFlight.add(downloadPromise);
+
+		try {
+			await downloadPromise;
+			// Clean up the track after downloading
+			await this.cleanupTrack(trackName);
+		} catch (error) {
+			console.error("Error downloading track:", error);
+		} finally {
+			// Remove from the currently downloading list once done
+			this.currentlyDownloading = this.currentlyDownloading.filter(
+				(title) => title !== songInfo.title,
+			);
+			// Once done, remove from inFlight set
+			inFlight.delete(downloadPromise);
+			console.log("Download finished:", songInfo.title);
+
+			// If throttle is enabled, insert a pause between downloads
+			if (this.throttleMode) await new Promise((r) => setTimeout(r, 2000));
+
+			// Disable throttle if queue is short enough
+			if (this.downloadQueue.length < 100) this.throttleMode = false;
+		}
+		// If there are any slots available, wake up and start the next download
+		if (inFlight.size < this.downloadCap && this.downloadQueue.length > 0) {
+			await this.runDownloader(); // Call recursively to start the next track
+		}
 	}
 
 	// Makes the filename equivalent to the track name

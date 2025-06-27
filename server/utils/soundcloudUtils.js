@@ -13,6 +13,7 @@ const CLIENT_ID = process.env.SOUNDCLOUD_CLIENT_ID;
 const CLIENT_SECRET = process.env.SOUNDCLOUD_CLIENT_SECRET;
 const PROJ_DIR = process.cwd() + "/";
 const TRACK_DIR = process.cwd() + "/tracks/";
+let keyTracker = 0;
 
 //////////////////////////////////////////////////
 // FUNCTIONS FOR AUTHENTICATING WITH SOUNDCLOUD //
@@ -103,12 +104,12 @@ export async function getJSON(url, token) {
 	const res = await fetch(
 		`https://api.soundcloud.com/resolve?url=${encodeURIComponent(url)}`,
 		{
-			headers: { Authorization: `OAuth ${token}` },
+			headers: { Authorization: `Bearer ${token}` },
 		},
 	);
 
 	const status = 0;
-
+;
 	if (!res.ok) {
 		let status = 1;
 		const body = await res.text();
@@ -120,17 +121,16 @@ export async function getJSON(url, token) {
 	return { status: status, resJSON: await res.json() };
 }
 
-export function addToQueue(resJSON, queue, token, key) {
-	console.log(resJSON);
+export function addToQueue(resJSON, queue, token) {
 	if (resJSON.kind === "track") {
-		const newSong = createNewSongInfo(resJSON, key);
+		const newSong = createNewSongInfo(resJSON, keyTracker);
 		queue.push(newSong);
 		return queue;
 	} else if (resJSON.kind === "playlist") {
 		resJSON.tracks.forEach((song, idx) => {
-			const newSong = createNewSongInfo(song, key);
+			const newSong = createNewSongInfo(song, keyTracker);
 			queue.push(newSong);
-			key += 1;
+			keyTracker += 1;
 		})
 		return queue;
 	}

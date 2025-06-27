@@ -5,14 +5,12 @@ import {
 	getJSON,
 } from "../utils/soundcloudUtils.js";
 import DownloadManager from "../utils/downloadManager.js";
-import { notifyPlayer } from "./playback.js";
 import "dotenv/config";
 import fs from "fs";
 
 const CLIENT_ID = process.env.SOUNDCLOUD_CLIENT_ID;
 const TRACK_DIR = process.cwd() + "/tracks/";
 let queue = [];
-let keyTracker = 0;
 let io = null;
 let downloadManager = new DownloadManager();
 
@@ -21,23 +19,19 @@ async function addItem(url, callback) {
 	const token = await getAccessToken();
 	try {
 		let { status, resJSON } = await getJSON(url, token);
-		console.log(status);
 		const success = sendClientCallback(callback, status, resJSON);
 		if (!success) return;
 
 		// Add new song to the queue
-		queue = addToQueue(resJSON, queue, token, keyTracker);
-		console.log(queue);
+		queue = addToQueue(resJSON, queue, token);
 		io.emit("updateQueue", queue);
-		keyTracker++;
 
 		// Download new songs
-		// await downloadManager.updateQueue(queue);
+		await downloadManager.updateQueue(queue);
 	} catch (err) {
 		console.log(err);
 		return;
 	}
-	notifyPlayer();
 }
 
 // Process return from getJSON and inform client approrpiately
@@ -69,7 +63,7 @@ function sendClientCallback(callback, status, resJSON) {
 }
 
 // For use when the client wants to delete a song
-function deleteSong(id) {
+async function deleteSong(id) {
 	let keyList = [];
 	queue.forEach((queueItem) => {
 		keyList.push(queueItem.key);
@@ -78,11 +72,11 @@ function deleteSong(id) {
 	let targetIndex = keyList.indexOf(id);
 
 	queue = queue.toSpliced(targetIndex, 1);
-
 	io.emit("updateQueue", queue);
+	await downloadManager.updateQueue(queue);
 }
 
-function reorderQueue(fromKey, toIndex) {
+async function reorderQueue(fromKey, toIndex) {
 	let keyList = [];
 	queue.forEach((queueItem) => {
 		keyList.push(queueItem.key);
@@ -93,6 +87,7 @@ function reorderQueue(fromKey, toIndex) {
 	queue = arrayMoveImmutable(queue, fromIndex, toIndex);
 
 	io.emit("updateQueue", queue);
+	await downloadManager.updateQueue(queue);
 }
 
 // For use when the player wants to play the next song
@@ -122,11 +117,11 @@ export default function setupQueueLogic(socket, ioInput) {
 	});
 
 	// Delete song by ID
-	socket.on("deleteSong", (id) => {
+	socket.on("deleteSong", async (id) => {
 		deleteSong(id);
 	});
 
-	socket.on("reorderQueue", (fromKey, toIndex) => {
+	socket.on("reorderQueue", async (fromKey, toIndex) => {
 		reorderQueue(fromKey, toIndex);
 	});
 }
