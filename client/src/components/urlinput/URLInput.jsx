@@ -13,12 +13,14 @@ export default function URLInput() {
 	async function submitSong() {
 		// Uncomment the following lines if you want the hammer button to authenticate!
 		// Only do this if you know what that means.
+
 		// window.location =
 		// 	`https://soundcloud.com/connect` +
 		// 	`?client_id=${"RnDqXwDyKyyo41bjlY5hSktjmAOu2D5s"}` +
 		// 	`&redirect_uri=https://trackhammer.mit.edu/callback` +
 		// 	`&response_type=code`;
-		// 	return;
+		// return;
+
 		if (!url.trim()) return;
 		socket.emit("addSong", url, (response) => {
 			if (response.success) {
