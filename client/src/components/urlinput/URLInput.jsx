@@ -11,6 +11,16 @@ export default function URLInput() {
 
 	// Define function for action upon press
 	async function submitSong() {
+		// Uncomment the following lines if you want the hammer button to authenticate!
+		// Only do this if you know what that means.
+
+		// window.location =
+		// 	`https://soundcloud.com/connect` +
+		// 	`?client_id=${"RnDqXwDyKyyo41bjlY5hSktjmAOu2D5s"}` +
+		// 	`&redirect_uri=https://trackhammer.mit.edu/callback` +
+		// 	`&response_type=code`;
+		// return;
+
 		if (!url.trim()) return;
 		socket.emit("addSong", url, (response) => {
 			if (response.success) {
@@ -25,11 +35,6 @@ export default function URLInput() {
 			}
 		});
 		setUrl("");
-		// window.location =
-		// 	`https://soundcloud.com/connect` +
-		// 	`?client_id=${"RnDqXwDyKyyo41bjlY5hSktjmAOu2D5s"}` +
-		// 	`&redirect_uri=https://trackhammer.mit.edu/callback` +
-		// 	`&response_type=code`;
 	}
 
 	// Update the value of the url every time it's changed

@@ -3,18 +3,16 @@ import {
 	addToQueue,
 	getAccessToken,
 	getJSON,
-	downloadTrack,
 } from "../utils/soundcloudUtils.js";
-import { notifyPlayer } from "./playback.js";
+import DownloadManager from "../utils/downloadManager.js";
 import "dotenv/config";
 import fs from "fs";
 
 const CLIENT_ID = process.env.SOUNDCLOUD_CLIENT_ID;
 const TRACK_DIR = process.cwd() + "/tracks/";
 let queue = [];
-let currentlyDownloading = [];
-let keyTracker = 0;
 let io = null;
+let downloadManager = new DownloadManager();
 
 async function addItem(url, callback) {
 	// Reauthenticate
@@ -25,33 +23,15 @@ async function addItem(url, callback) {
 		if (!success) return;
 
 		// Add new song to the queue
-		queue = addToQueue(resJSON, queue, token, keyTracker);
+		queue = addToQueue(resJSON, queue, token);
 		io.emit("updateQueue", queue);
-		keyTracker++;
-		console.log("Appended a new song to the queue");
-		console.log(queue[queue.length - 1]);
 
-		let tracks = fs.readdirSync(TRACK_DIR);
-		let isCurrentlyDownloading = currentlyDownloading.includes(resJSON.title);
-
-		queue.forEach(async (songInfo) => {
-			// Return if already downloaded or downloading
-			if (tracks.includes(songInfo.track + ".mp3")) return;
-			if (currentlyDownloading.includes(songInfo.track)) return;
-
-			currentlyDownloading.push(songInfo.track);
-			await downloadTrack(songInfo);
-			currentlyDownloading = currentlyDownloading.filter(
-				(e) => e !== songInfo.track,
-			);
-			console.log("Notifying Player");
-			notifyPlayer();
-		});
+		// Download new songs
+		await downloadManager.updateQueue(queue);
 	} catch (err) {
 		console.log(err);
 		return;
 	}
-	notifyPlayer();
 }
 
 // Process return from getJSON and inform client approrpiately
@@ -83,7 +63,7 @@ function sendClientCallback(callback, status, resJSON) {
 }
 
 // For use when the client wants to delete a song
-function deleteSong(id) {
+async function deleteSong(id) {
 	let keyList = [];
 	queue.forEach((queueItem) => {
 		keyList.push(queueItem.key);
@@ -92,11 +72,11 @@ function deleteSong(id) {
 	let targetIndex = keyList.indexOf(id);
 
 	queue = queue.toSpliced(targetIndex, 1);
-
 	io.emit("updateQueue", queue);
+	await downloadManager.updateQueue(queue);
 }
 
-function reorderQueue(fromKey, toIndex) {
+async function reorderQueue(fromKey, toIndex) {
 	let keyList = [];
 	queue.forEach((queueItem) => {
 		keyList.push(queueItem.key);
@@ -107,6 +87,7 @@ function reorderQueue(fromKey, toIndex) {
 	queue = arrayMoveImmutable(queue, fromIndex, toIndex);
 
 	io.emit("updateQueue", queue);
+	await downloadManager.updateQueue(queue);
 }
 
 // For use when the player wants to play the next song
@@ -117,7 +98,7 @@ export function getNextSong() {
 	// Check if next track is ready
 	// If it's not, it'll play when addItem() calls notifyPlayer()
 	let tracks = fs.readdirSync(TRACK_DIR);
-	if (!tracks.includes(queue[0].track + ".mp3")) return false;
+	if (!tracks.includes(queue[0].title + ".mp3")) return false;
 
 	// Otherwise shift the songInfo out of the queue and return it
 	const removedSong = queue.shift();
@@ -136,11 +117,11 @@ export default function setupQueueLogic(socket, ioInput) {
 	});
 
 	// Delete song by ID
-	socket.on("deleteSong", (id) => {
+	socket.on("deleteSong", async (id) => {
 		deleteSong(id);
 	});
 
-	socket.on("reorderQueue", (fromKey, toIndex) => {
+	socket.on("reorderQueue", async (fromKey, toIndex) => {
 		reorderQueue(fromKey, toIndex);
 	});
 }
