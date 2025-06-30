@@ -140,12 +140,15 @@ function createNewSongInfo(songJSON, key) {
 	let artist = undefined;
 	if (songJSON.metadata_artist) artist = songJSON.metadata_artist;
 	else artist = songJSON.user.username
+		let coverURL = songJSON.artwork_url
+	if (coverURL === null) coverURL = "/img/putz-girl.jpg";
+	console.log(coverURL);
 	return {
 		permaURL: songJSON.permalink_url,
 		title: songJSON.title,
 		artist: artist,
 		duration: parseInt(songJSON.duration / 1000),
-		coverURL: songJSON.artwork_url,
+		coverURL: coverURL,
 		key: key,
 	};
 }

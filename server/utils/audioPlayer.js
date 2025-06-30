@@ -44,8 +44,10 @@ class AudioPlayer {
 		// Handle end of file event for next song
 		if (data.startsWith("@P")) {
 			const parts = data.split(/\s+/);
-			if (parts[1] == 3) playNextSong();
-			console.log("Reached end of song");
+			if (parts[1] == 3) {
+				playNextSong();
+				console.log("Reached end of song");
+			}
 		}
 	}
 

@@ -7,11 +7,15 @@ const PROJ_DIR = process.cwd() + "/";
 
 export default class DownloadManager {
 	constructor() {
-		this.downloadCap = 5;
+		// Cap and stall are for throttling download speed
+		// yt-dl craps out if there are too many api calls
+		// So when the queue is long we download slowly
+		this.downloadCap = 3;
+		this.downloadStall = 0;
 		this.downloadQueue = [];
 		this.currentlyDownloading = [];
 		this.downloaderRunning = false;
-		this.throttleMode = false;
+		this.counter = 0;
 	}
 
 	// Takes in the queue from playback and adds songs that need downloading
@@ -21,16 +25,19 @@ export default class DownloadManager {
 			let tracks = fs.readdirSync(TRACK_DIR);
 			let dlQueueTitles = this.downloadQueue.map((song) => song.title);
 
-			if (tracks.includes(songInfo.title + ".mp3")) continue;
+			if (tracks.includes(songInfo.title + ".mp3")) {
+				notifyPlayer();
+				continue;
+			}
 			if (dlQueueTitles.includes(songInfo.title)) continue;
 			if (this.currentlyDownloading.includes(songInfo.title)) continue;
 			this.downloadQueue.push(songInfo);
 		}
 		if (this.downloadQueue.length > 100) {
-			this.throttleMode = true;
+			this.downloadCap = 1;
+			this.downloadStall = 4000;
 			console.log("Queue is long - enabling throttling");
 		}
-		console.log(this.downloaderRunning);
 		if (!this.downloaderRunning) this.runDownloader();
 	}
 
@@ -56,6 +63,8 @@ export default class DownloadManager {
 				}
 			}
 
+			console.log(this.counter);
+			this.counter++;
 			console.log("Currently Downloading: " + this.currentlyDownloading);
 			// Wait for any download to finish (Promise.race) and then start a new one
 			if (this.currentlyDownloading.length === this.downloadCap) {
@@ -63,6 +72,7 @@ export default class DownloadManager {
 			}
 
 			notifyPlayer();
+			await new Promise((r) => setTimeout(r, this.downloadStall));
 		}
 		this.downloaderRunning = false;
 	}
@@ -100,15 +110,13 @@ export default class DownloadManager {
 			inFlight.delete(downloadPromise);
 			console.log("Download finished:", songInfo.title);
 
-			// If throttle is enabled, insert a pause between downloads
-			if (this.throttleMode) await new Promise((r) => setTimeout(r, 2000));
-
 			// Disable throttle if queue is short enough
-			if (this.downloadQueue.length < 100) this.throttleMode = false;
-		}
-		// If there are any slots available, wake up and start the next download
-		if (inFlight.size < this.downloadCap && this.downloadQueue.length > 0) {
-			await this.runDownloader(); // Call recursively to start the next track
+			if (this.downloadQueue.length < 50) {
+				this.downloadCap = 3;
+				this.downloadStall = 0;
+			} else {
+				await new Promise((r) => setTimeout(r, 1000));
+			}
 		}
 	}
 

@@ -18,13 +18,13 @@ export function playNextSong() {
 	activeSong = getNextSong();
 	if (!activeSong) {
 		isPlaying: false;
-		return;
+	} else {
+		isPlaying = true;
+		AudioPlayer.play(activeSong.title);
 	}
-	isPlaying = true;
 	io.emit("updateSong", activeSong);
 	io.emit("updatePlaybackState", isPlaying);
 	AudioPlayer.setVolume(volume);
-	AudioPlayer.play(activeSong.title);
 }
 
 export function timeCallback(seconds) {
@@ -66,6 +66,8 @@ export default function setupPlaybackLogic(socket, ioInput) {
 	socket.on("changePlaybackState", () => {
 		isPlaying = !isPlaying;
 		AudioPlayer.pause();
+		if (isPlaying) console.log("Playing " + activeSong.title)
+		else console.log("Pausing " + activeSong.title)
 		console.log("Changing playback state");
 		io.emit("updatePlaybackState", isPlaying);
 	});
@@ -73,14 +75,13 @@ export default function setupPlaybackLogic(socket, ioInput) {
 	socket.on("resetSongProgress", () => {
 		isPlaying = true;
 		AudioPlayer.play(activeSong.title);
-		console.log("Restarting song progress");
+		console.log("Restarting " + activeSong.title);
 	});
 
 	socket.on("skipSong", () => {
 		activeSong = false;
 		io.emit("updateSong", activeSong);
 		AudioPlayer.stop();
-		console.log("Skipping song");
 		playNextSong();
 	});
 }
