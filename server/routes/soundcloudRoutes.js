@@ -2,7 +2,6 @@ import { initWithCode } from "../utils/soundcloudUtils.js";
 
 export default function setupSoundCloudRoute(app) {
 	app.get("/callback", async (req, res) => {
-		console.log("LINE 5");
 		const code = req.query.code;
 		if (!code) {
 			return res.status(400).send("Missing `code` in query string");

@@ -15,7 +15,6 @@ export default class DownloadManager {
 		this.downloadQueue = [];
 		this.currentlyDownloading = [];
 		this.downloaderRunning = false;
-		this.counter = 0;
 	}
 
 	// Takes in the queue from playback and adds songs that need downloading
@@ -35,7 +34,7 @@ export default class DownloadManager {
 		}
 		if (this.downloadQueue.length > 100) {
 			this.downloadCap = 1;
-			this.downloadStall = 4000;
+			this.downloadStall = 5000;
 			console.log("Queue is long - enabling throttling");
 		}
 		if (!this.downloaderRunning) this.runDownloader();
@@ -63,15 +62,12 @@ export default class DownloadManager {
 				}
 			}
 
-			console.log(this.counter);
-			this.counter++;
 			console.log("Currently Downloading: " + this.currentlyDownloading);
 			// Wait for any download to finish (Promise.race) and then start a new one
 			if (this.currentlyDownloading.length === this.downloadCap) {
 				await Promise.race([...inFlight]);
 			}
 
-			notifyPlayer();
 			await new Promise((r) => setTimeout(r, this.downloadStall));
 		}
 		this.downloaderRunning = false;
@@ -109,13 +105,12 @@ export default class DownloadManager {
 			// Once done, remove from inFlight set
 			inFlight.delete(downloadPromise);
 			console.log("Download finished:", songInfo.title);
+			notifyPlayer();
 
 			// Disable throttle if queue is short enough
 			if (this.downloadQueue.length < 50) {
 				this.downloadCap = 3;
 				this.downloadStall = 0;
-			} else {
-				await new Promise((r) => setTimeout(r, 1000));
 			}
 		}
 	}

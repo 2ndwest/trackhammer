@@ -142,7 +142,6 @@ function createNewSongInfo(songJSON, key) {
 	else artist = songJSON.user.username
 		let coverURL = songJSON.artwork_url
 	if (coverURL === null) coverURL = "/img/putz-girl.jpg";
-	console.log(coverURL);
 	return {
 		permaURL: songJSON.permalink_url,
 		title: songJSON.title,
