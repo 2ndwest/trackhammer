@@ -8,7 +8,7 @@ import { notifyPlayer } from "../sockets/playback.js"
 
 const TOKEN_ENDPOINT = "https://api.soundcloud.com/oauth2/token";
 const CALLBACK_URI = "https://trackhammer.mit.edu/callback";
-const TOKEN_DIR = "../tokenData.json";
+const TOKEN_DIR = "./tokenData.json";
 const CLIENT_ID = process.env.SOUNDCLOUD_CLIENT_ID;
 const CLIENT_SECRET = process.env.SOUNDCLOUD_CLIENT_SECRET;
 const PROJ_DIR = process.cwd() + "/";
@@ -59,7 +59,7 @@ export async function getAccessToken() {
 	// Get tokens back out from file
 	let tokenData;
 	try {
-		const raw = await fsp.readFile("../tokenData.json", "utf8");
+		const raw = await fsp.readFile("./tokenData.json", "utf8");
 		tokenData = JSON.parse(raw);
 	} catch (err) {
 		throw new Error("No token data found - Authenticate first");
@@ -103,11 +103,8 @@ export async function getJSON(url, token) {
 	// Get track information from soundcloud URL
 	const res = await fetch(
 		`https://api.soundcloud.com/resolve?url=${encodeURIComponent(url)}`,
-		{
-			headers: { Authorization: `Bearer ${token}` },
-		},
+		{ headers: { Authorization: `Bearer ${token}` } },
 	);
-
 	const status = 0;
 ;
 	if (!res.ok) {

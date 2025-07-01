@@ -103,7 +103,6 @@ export function getNextSong() {
 	// Otherwise shift the songInfo out of the queue and return it
 	const removedSong = queue.shift();
 	io.emit("updateQueue", queue);
-	console.log("Popped song in queue is: " + removedSong);
 	return removedSong;
 }
 
