@@ -84,8 +84,12 @@ export default class DownloadManager {
 			cookies: PROJ_DIR + "sc_cookies.txt",
 			"audio-format": "mp3",
 			"audio-quality": "0",
-			"retry-sleep": "2000",
+			"retry-sleep": "5",
 			"extractor-retries": "10",
+			"f": "bestaudio[protocol!=m3u8]",
+			"concurrent-fragments": "1",
+			"sleep-requests": "1",
+			"sleep-interval": "2",
 			output: TRACK_DIR + trackName + "-temp.mp3",
 		});
 

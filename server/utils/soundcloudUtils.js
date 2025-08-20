@@ -4,7 +4,7 @@ import fs, { promises as fsp } from "fs";
 import { exec } from "child_process";
 import path from "path";
 import ytdlp from "yt-dlp-exec";
-import { notifyPlayer } from "../sockets/playback.js"
+import { notifyPlayer } from "../sockets/playback.js";
 
 const TOKEN_ENDPOINT = "https://api.soundcloud.com/oauth2/token";
 const CALLBACK_URI = "https://trackhammer.mit.edu/callback";
@@ -106,7 +106,6 @@ export async function getJSON(url, token) {
 		{ headers: { Authorization: `Bearer ${token}` } },
 	);
 	const status = 0;
-;
 	if (!res.ok) {
 		let status = 1;
 		const body = await res.text();
@@ -128,20 +127,25 @@ export function addToQueue(resJSON, queue, token) {
 			const newSong = createNewSongInfo(song, keyTracker);
 			queue.push(newSong);
 			keyTracker += 1;
-		})
+		});
 		return queue;
 	}
 }
 
+function sanitizeForFileName(str) {
+	return str.replace(/[<>:"/\\|?*]+/g, "_").trim();
+}
+
 function createNewSongInfo(songJSON, key) {
 	let artist = undefined;
-	if (songJSON.metadata_artist) artist = songJSON.metadata_artist;
-	else artist = songJSON.user.username
-		let coverURL = songJSON.artwork_url
+	if (songJSON.metadata_artist)
+		artist = sanitizeForFileName(songJSON.metadata_artist);
+	else artist = sanitizeForFileName(songJSON.user.username);
+	let coverURL = songJSON.artwork_url;
 	if (coverURL === null) coverURL = "/img/putz-girl.jpg";
 	return {
 		permaURL: songJSON.permalink_url,
-		title: songJSON.title,
+		title: sanitizeForFileName(songJSON.title),
 		artist: artist,
 		duration: parseInt(songJSON.duration / 1000),
 		coverURL: coverURL,

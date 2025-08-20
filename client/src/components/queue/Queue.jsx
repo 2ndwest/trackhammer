@@ -8,8 +8,8 @@ export default function Queue({
 	reorderQueueCallback,
 	deleteSongCallback,
 }) {
-	const scrollSpeed = 50; // px per frame
-	const edgeThreshold = 50; // px from top/bottom to trigger
+	const scrollSpeed = 70; // px per frame
+	const edgeThreshold = 70; // px from top/bottom to trigger
 	const listRef = useRef(null);
 	const [activeDragKey, setActiveDragKey] = useState(-1);
 
