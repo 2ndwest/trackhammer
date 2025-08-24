@@ -1,0 +1,272 @@
+.Player {
+  margin: 0.5rem 0rem 1rem 0rem;
+  border: 2px solid white;
+  border-radius: 5px;
+  display: flex;
+  height: 5rem;
+  background-color: var(--bg-highlight);
+  overflow: hidden;
+}
+
+.Player-Empty {
+  display: none;
+}
+
+.Album-Container {
+  display: block;
+  flex: 0 0 5rem;
+  border-right: 2px solid gray;
+}
+
+.Album-Container img {
+  height: 5rem;
+}
+
+.Player-Body {
+  flex: 1 1 auto;
+  min-width: 0;
+  flex-direction: row;
+  width: 100%;
+}
+
+/* Div for the title */
+.Track-Container {
+  overflow: hidden;
+  white-space: nowrap;
+  min-width: 0;
+  height: 45%;
+  position: relative;
+}
+
+.Track-Container a {
+  overflow: hidden;
+  display: block;
+  white-space: nowrap;
+  margin: 0.3rem 0 0 0.5rem;
+  text-align: left;
+  color: white;
+  font-size: 1.5rem;
+  text-decoration: none;
+}
+
+.Track-Container a:hover {
+  text-decoration: underline;
+}
+
+.Artist-Container {
+  overflow: hidden;
+  white-space: nowrap;
+  min-width: 0;
+  height: 27%;
+  position: relative;
+}
+
+.Artist-Container p {
+  overflow: hidden;
+  white-space: nowrap;
+  margin: 0.1rem 0 0 0.5rem;
+  text-align: left;
+  color: gray;
+  font-size: 1rem;
+}
+
+.Progress-Container {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  height: 28%;
+  outline: 9px blue;
+}
+
+.Bar-Container {
+  flex: 1 1 80%;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  height: 25%;
+}
+
+.Bar-Progress {
+  width: 100%;
+  height: 3px;
+  margin-left: 0.6rem;
+  border-radius: 3px;
+  border: 0px;
+  overflow: hidden;
+  appearance: none;
+}
+
+.Bar-Progress::-moz-progress-bar {
+  background-color: var(--accent-orange);
+}
+
+.Bar-Progress::-webkit-progress-bar {
+  background-color: white;
+}
+
+.Bar-Progress::-webkit-progress-value {
+  background-color: var(--accent-orange);
+}
+
+.Time-Container {
+  flex: 0 0 auto;
+  height: 100%;
+}
+
+.Time-Container p {
+  font-size: 0.8rem;
+  margin: 0.15rem 0.5rem 0 0.5rem;
+  color: gray;
+}
+
+/* Overlay for fading out overflow text */
+.Fade-Out::after {
+  content: "";
+  z-index: 1;
+  right: 0;
+  top: 0;
+  width: 2rem;
+  height: 100%;
+  pointer-events: none;
+  background-image: linear-gradient(to right,
+      rgba(255, 255, 255, 0),
+      var(--bg-highlight) 70%);
+  position: absolute;
+}
+
+/* Hide certain elements when screen shrinks */
+@media (max-width: 30rem) {
+  .Album-Container {
+    display: none;
+  }
+}
+
+/* Buttons and all that */
+
+.Button-Panel {
+  flex: 1 0 auto;
+  min-width: 5rem;
+  flex-shrink: 0;
+}
+
+.Playback-Buttons-Container {
+  height: 50%;
+  border-left: 2px solid white;
+  border-top: 2px solid white;
+  border-top-left-radius: 4px;
+  overflow: hidden;
+}
+
+.Playback-Button {
+  background-color: var(--accent-orange);
+  color: white;
+  height: 100%;
+  width: 33.333%;
+  border: 0;
+  border-left: 2px solid white;
+  width: 2.5rem;
+  transition-duration: 0.15s;
+}
+
+.Playback-Button:hover {
+  background-color: var(--darkened-orange);
+}
+
+.Playback-Button:active {
+  background-color: var(--bg-highlight);
+}
+
+.Outer-Button {
+  border-left: 0px;
+}
+
+.Volume-Container {
+  height: 50%;
+  text-align: right;
+  display: flex;
+}
+
+.Volume-Icon-Button{
+  width: 33.333%;
+  min-width: 33.333%;
+  height: 100%;
+  border: 0px;
+  color: silver;
+  background-color: var(--bg-highlight);
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding-left: 0.8rem;
+  transition-duration: 0.15s;
+}
+
+.Volume-Icon-Button:hover {
+  color: dimgray;
+}
+
+.Volume-Button {
+  background-color: transparent;
+  color: white;
+  height: 100%;
+  width: 33.333%;
+  border: 0;
+  border-left: 2px solid white;
+  width: 2.5rem;
+  z-index: 1;
+  transition-duration: 0.15s;
+}
+
+.Volume-Button:hover {
+  color: silver;
+}
+
+.Volume-Button:active {
+  color: var(--bg);
+}
+
+.Volume-Buttons-Container {
+  z-index: 1;
+  height: 100%;
+  position: relative;
+}
+
+.Volume-Meter-Container {
+  width: 66.666%;
+  height: 100%;
+  position: relative;
+}
+
+.Volume-Meter {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  top: 0;
+  left: 0;
+  margin-left: 2px;
+
+  appearance: none;
+  background: none;
+}
+
+.Volume-Meter::-moz-meter-bar {
+  background: var(--accent-orange);
+}
+
+.Volume-Meter::-webkit-meter-bar {
+  background: none;
+  height: 2.38rem !important;
+}
+
+.Volume-Meter::-webkit-meter-optimum-value {
+  background: var(--accent-orange);
+}
+
+.Muted::-moz-meter-bar {
+  background: dimgray;
+}
+
+.Muted::-webkit-meter-optimum-value {
+  background: dimgray;
+}

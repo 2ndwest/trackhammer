@@ -1,0 +1,250 @@
+.Hider-Active {
+	display: none;
+}
+
+/* Wrapper div for scrolling */
+.Queue-Wrapper {
+	max-height: 35vh;
+	overflow-y: auto;
+	overflow-x: hidden;
+	border: 2px solid white;
+	border-radius: 5px;
+	-ms-overflow-style: none;
+	/* IE/Edge */
+	scrollbar-width: none;
+	/* Firefox */
+	scroll-behavior: smooth;
+}
+
+.Queue-Wrapper::-webkit-scrollbar {
+	display: none;
+}
+
+.Queue {
+	display: table;
+	width: 100%;
+	table-layout: fixed;
+	background-color: var(--bg-highlight);
+	border-radius: 5px;
+	overflow: hidden;
+	border-spacing: 0;
+	border-collapse: collapse;
+}
+
+.Queue::-webkit-scrollbar {
+	display: none;
+}
+
+.Queue-Item {
+	display: table-row;
+	height: 3rem;
+	text-align: left;
+	color: white;
+	background-color: var(--bg-highlight);
+
+	border: 2px solid gray;
+}
+
+.Column {
+	display: table-cell;
+	vertical-align: middle;
+}
+
+.Album {
+	width: 3rem;
+	max-height: 3rem;
+	max-width: 3rem;
+	min-width: 3rem;
+	padding: 0;
+}
+
+.Handle {
+	width: 0.5rem;
+	max-width: 0.5rem;
+	min-width: 0.5rem;
+	cursor: grab;
+	padding-left: 1rem;
+	padding-right: 1rem;
+}
+
+.Handle:active {
+	cursor: grabbing;
+}
+
+.Index {
+	text-align: center;
+	width: 1rem;
+	max-width: 2rem;
+	min-width: 2rem;
+}
+
+.Track {
+	width: 40%;
+	max-width: 40%;
+	min-width: 40%;
+}
+
+.Artist {
+	width: 30%;
+	max-width: 30%;
+	min-width: 30%;
+}
+
+.Duration {
+	width: 3rem;
+	max-width: 3rem;
+	min-width: 3rem;
+	padding-right: 4rem;
+}
+
+.Thumbnail {
+	display: block;
+	height: 3.5rem;
+	width: auto;
+	object-fit: cover;
+	margin: 0;
+	padding: 0;
+	border-right: 2px solid gray;
+}
+
+/* Hide fields based on screen width */
+@media (max-width: 38rem) {
+	.Artist {
+		display: none;
+	}
+
+	.Track {
+		width: 45%;
+		max-width: 45%;
+		min-width: 45%;
+	}
+}
+
+@media (max-width: 23rem) {
+	.Index {
+		display: none;
+	}
+
+	.Album {
+		display: none;
+	}
+
+	.Handle {
+		display: none;
+	}
+
+	.Track {
+		padding-left: 1rem;
+		max-width: 75%;
+		min-width: 75%;
+		width: 75%;
+	}
+
+	.Duration {
+		min-width: 0rem;
+		max-width: 1rem;
+		padding-right: 5rem;
+	}
+}
+
+.Info-Text {
+	position: relative;
+	white-space: nowrap;
+	overflow: hidden;
+	width: 100%;
+}
+
+.Info-Text::after {
+	content: "";
+	position: absolute;
+	z-index: 1;
+	right: 0;
+	top: 0;
+	width: 2rem;
+	height: 100%;
+	pointer-events: none;
+	background-image: linear-gradient(
+		to right,
+		rgba(255, 255, 255, 0),
+		var(--bg-highlight) 70%
+	);
+}
+
+.Darkened::after {
+	content: "";
+	position: absolute;
+	z-index: 1;
+	right: 0;
+	top: 0;
+	width: 2rem;
+	height: 100%;
+	pointer-events: none;
+	background-image: linear-gradient(
+		to right,
+		rgba(255, 255, 255, 0),
+		var(--bg) 70%
+	);
+}
+
+.Title-Link {
+	color: white;
+	text-decoration: none;
+}
+
+.Title-Link:hover {
+	text-decoration: underline;
+}
+
+.Queue-Item.Dragged {
+	color: var(--accent-orange);
+	outline: 1px solid gray;
+}
+
+.Queue-Item.Dragged a {
+	color: var(--accent-orange);
+}
+
+.Hovered {
+	background-color: var(--bg);
+}
+
+.Postqueue-Container {
+	width: 100%;
+	display: flex;
+}
+
+.Trash-Container {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: var(--bg);
+	width: 3rem;
+	height: 2rem;
+	font-size: 1.2rem;
+	border-radius: 6px;
+	border: 2px dashed var(--bg);
+	transition-duration: 0.15s;
+	margin-top: 0.5rem;
+}
+
+.SC-Logo-Link {
+	width: 7rem;
+	height: 1.4rem;
+	margin: 0.5rem 0.5rem 0 auto;
+}
+
+.SC-Logo {
+	width: 100%;
+	height: 100%;
+}
+
+.Visible {
+	color: gray;
+	border: 2px dashed gray;
+	transition-duration: 0.15s;
+}
+
+.Active {
+	color: var(--accent-orange);
+	border: 2px dashed var(--accent-orange);
+}

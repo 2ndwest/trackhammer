@@ -1,0 +1,33 @@
+:root {
+	--bg: #151515;
+	--bg-highlight: #222;
+	--light-gray: #cbc5bf;
+	--accent-orange: #ff5900;
+	--darkened-orange: #cc4700;
+	--error-red: #ff4848;
+}
+
+* {
+	box-sizing: border-box;
+	font-family: "Varela Round", sans-serif;
+	font-size: 1rem;
+	zoom: 100%;
+}
+
+body {
+	background-color: var(--bg);
+}
+
+body.dragging,
+body.dragging * {
+	cursor: grabbing !important;
+	cursor: -moz-grabbing;
+	cursor: -webkit-grabbing;
+}
+
+.App {
+	text-align: center;
+	max-width: 50rem;
+	width: 90vw;
+	margin: auto;
+}
