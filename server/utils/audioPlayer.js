@@ -16,8 +16,6 @@ class AudioPlayer {
 		);
 		this.mpv.stdout.setEncoding("utf8");
 		this.mpv.stderr.setEncoding("utf8");
-		this.mpv.stdout.on("data", d => process.stdout.write("[mpv] " + d));
-		this.mpv.stderr.on("data", d => process.stderr.write("[mpv:err] " + d));
 		this.mpv.on("exit", c => console.log("mpv exited with code", c));
 		this.lastElapsed = 0;
     this.ignoreNextEnd = false;
@@ -46,7 +44,6 @@ class AudioPlayer {
         }
       });
 
-      // Start time updates from mpv
       this.send(["observe_property", 1, "time-pos"]);
 
       // Flush any commands queued before socket was ready
@@ -58,6 +55,7 @@ class AudioPlayer {
     this._installExitHooks();
 	}
 
+  // Function for communicating with mpv player
   send = (cmd) => {
     const payload = Array.isArray(cmd) ? { command: cmd } : cmd;
     const line = JSON.stringify(payload) + "\n";
@@ -65,6 +63,7 @@ class AudioPlayer {
     else this._queue.push(line);
   };
 
+  // Creates pipe for communicating with mpv player
   connectIpc = () =>
   new Promise((resolve, reject) => {
     let tries = 0;
@@ -96,6 +95,7 @@ class AudioPlayer {
     console.log("Playback Stopped");
 	}
 
+  // Used to differentiate between skipping songs and them ending on their own
   setIgnoreNextEnd(val) {this.ignoreNextEnd = val}
 
 	setVolume(percent) { this.send(["set_property", "volume", percent]); }
