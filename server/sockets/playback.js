@@ -12,10 +12,12 @@ let io = null;
 // Allows the queue to tell player when a new song has been added
 export function notifyPlayer() {
 	if (!activeSong) playNextSong();
+	console.log("notifyPlayer() called")
 }
 
 export function playNextSong() {
 	activeSong = getNextSong();
+	console.log("playNextSong called, the next song is " + activeSong.title)
 	if (!activeSong) {
 		isPlaying: false;
 	} else {
