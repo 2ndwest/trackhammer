@@ -6,7 +6,7 @@ export default function PTZHeader() {
 	return (
 		<header className="App-header">
 			<a
-				href="https://soundcloud.com/discover"
+				href="https://soundcloud.com/putz-800223900/sets"
 				target="_blank"
 				rel="noreferrer"
 				draggable="false"
