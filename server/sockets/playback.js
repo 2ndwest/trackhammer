@@ -17,7 +17,6 @@ export function notifyPlayer() {
 
 export function playNextSong() {
 	activeSong = getNextSong();
-	console.log("playNextSong called, the next song is " + activeSong.title)
 	if (!activeSong) {
 		isPlaying: false;
 	} else {

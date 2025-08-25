@@ -94,7 +94,6 @@ async function reorderQueue(fromKey, toIndex) {
 export function getNextSong() {
 	// Return false if there is no next song
 	if (queue[0] == undefined) return false;
-	console.log("queue[0] is " + queue[0].title)
 
 	// Check if next track is ready
 	// If it's not, it'll play when addItem() calls notifyPlayer()
@@ -103,7 +102,6 @@ export function getNextSong() {
 
 	// Otherwise shift the songInfo out of the queue and return it
 	const removedSong = queue.shift();
-	console.log("removedSong is " + removedSong.title)
 	io.emit("updateQueue", queue);
 	return removedSong;
 }
