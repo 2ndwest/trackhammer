@@ -98,7 +98,9 @@ export function getNextSong() {
 	// Check if next track is ready
 	// If it's not, it'll play when addItem() calls notifyPlayer()
 	let tracks = fs.readdirSync(TRACK_DIR);
-	if (!tracks.includes(queue[0].title + ".mp3")) return false;
+	if (!tracks.includes(queue[0].title + ".mp3")) { 
+		return false;
+	}
 
 	// Otherwise shift the songInfo out of the queue and return it
 	const removedSong = queue.shift();

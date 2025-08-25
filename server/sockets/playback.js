@@ -12,7 +12,6 @@ let io = null;
 // Allows the queue to tell player when a new song has been added
 export function notifyPlayer() {
 	if (!activeSong) playNextSong();
-	console.log("notifyPlayer() called")
 }
 
 export function playNextSong() {
@@ -78,7 +77,6 @@ export default function setupPlaybackLogic(socket, ioInput) {
 	socket.on("skipSong", () => {
 		activeSong = false;
 		AudioPlayer.changePlaybackState(false)
-		console.log("Received Skipsong")
 		io.emit("updateSong", activeSong);
 		AudioPlayer.setIgnoreNextEnd(true)
 		playNextSong();

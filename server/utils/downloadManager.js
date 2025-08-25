@@ -124,7 +124,7 @@ export default class DownloadManager {
 		const finalPath = TRACK_DIR + trackName;
 		let tracks = fs.readdirSync(TRACK_DIR);
 		if (tracks.includes(trackName + "-temp.mp3")) {
-			fsp.rename(finalPath + "-temp.mp3", finalPath + ".mp3");
+			await fsp.rename(finalPath + "-temp.mp3", finalPath + ".mp3");
 		}
 	}
 }
